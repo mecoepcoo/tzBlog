@@ -6,12 +6,30 @@ const re = require('../../lib/response');
 const lang = require('../../config/lang');
 const AdminUserModel = require('../../models/admin-user');
 
-// todo api文档编写
+/**
+ * @apiDefine GroupAdminUser 管理员
+ */
+
+/**
+ * @apiDefine STATUS
+ * @apiSuccess {string} message 文本信息
+ */
 router.route('/adminusers')
-  .get( (req, res, next) => {
+  /**
+   * @api {get} /adminusers 获取管理员列表
+   * @apiName getAdmins
+   * @apiDescription 获取管理员列表
+   * @apiGroup GroupAdminUser
+   * @apiVersion 1.0.0
+   *
+   * @apiUse STATUS
+   * @apiSuccess {json} data
+   * @apiSuccess {string} data.name 管理员用户名
+   * @apiSuccess {number} total 总条数
+   */
+  .get( (req, res) => {
     const page = +req.query.page || 1;
     const pageSize = +req.query.pageSize || 5;
-    console.log(page, pageSize)
     const result = {};
     // 取管理员列表
     const adminUserQuery = AdminUserModel.AdminUser.find({})
@@ -32,11 +50,25 @@ router.route('/adminusers')
       }, err => {
         return re.r404(err, lang.NOT_FOUND, res);
       });
+
     Promise.all([adminUserQuery, adminUserCountQuery])
       .then(() => {
         return re.r200(result.users, lang.OK, result.total, res);
       })
   })
+
+  /**
+   * @api {post} /adminusers 新增管理员
+   * @apiName creatAdmin
+   * @apiDescription 新增管理员
+   * @apiGroup GroupAdminUser
+   * @apiVersion 1.0.0
+   * 
+   * @apiUse STATUS
+   * @apiSuccess {json} data 
+   * @apiSuccess {string} data.name 管理员名
+   * @apiSuccess {string} data.isBan 管理员是否禁用 true: 禁用，false: 启用
+   */
   .post( (req, res) => {
     const adminName = req.body.adminName;
     let password = req.body.password;
@@ -53,12 +85,19 @@ router.route('/adminusers')
 
     newAdminUser.save()
       .then(data => {
+        delete data.password;
+        delete data.salt;
+        delete data.createDate;
+        delete data.lastLogin;
         return re.r201(data, lang.CREATE_OK, res);
       }, err => {
         return re.r104(err, lang.DUPLICATE, res);
       })
 
-    // todo 完成管理员接口推送master分支并新建分支
+      .put( (req, res) => {
+        const id = req.params.id;
+      })
+
   });
 
 
