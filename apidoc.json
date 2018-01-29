@@ -1,0 +1,21 @@
+{
+  "name": "tzBlog",
+  "version": "1.0.0",
+  "description": "tzBlog的接口文档",
+  "title": "tzBlog接口文档",
+  "url": "http://localhost:3000",
+  "header": {
+    "title": "使用指南",
+    "filename": "api-header.md"
+  },
+  "footer": {
+    "title": "其他",
+    "filename": "api-footer.md"
+  },
+  "order": [
+    "getAdmins",
+    "createAdmin",
+    "updateAdmin",
+    "deleteAdmin"
+  ]
+}
