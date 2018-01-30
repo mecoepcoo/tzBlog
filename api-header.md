@@ -11,3 +11,15 @@ nodejs + express + mongodb + ngular4 + ng-zorro制作的个人博客项目。
 
 # 托管仓库
 - github：[https://github.com/mecoepcoo/tzBlog](https://github.com/mecoepcoo/tzBlog)
+
+# 指令
+运行后端：
+
+    $ sudo npm install
+    $ sudo npm start
+
+运行前端：
+
+生成文档：
+
+    $ sudo npm run builddoc

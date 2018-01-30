@@ -1,3 +1,4 @@
+/* 管理员模型 */
 const db = require('./db');
 const mongoose = db.mongoose;
 

@@ -8,7 +8,7 @@ const lang = require('../../config/lang');
 const AdminUserModel = require('../../models/admin-user');
 
 /**
- * @apiDefine GroupAdminUser 管理员
+ * @apiDefine AdminUser 管理员
  */
 
 /**
@@ -20,7 +20,7 @@ router.route('/adminusers')
    * @api {get} /adminusers 获取管理员列表
    * @apiName getAdmins
    * @apiDescription 获取管理员列表
-   * @apiGroup GroupAdminUser
+   * @apiGroup AdminUser
    * @apiVersion 1.0.0
    *
    * @apiParam {number} page 页码
@@ -28,7 +28,7 @@ router.route('/adminusers')
    * @apiUse STATUS
    * @apiSuccess {json} data
    * @apiSuccess {string} data.name 管理员用户名
-   * @apiSuccess {createDate} data.createDate 管理员创建时间
+   * @apiSuccess {number} data.createDate 管理员创建时间
    * @apiSuccess {number} total 总条数
    * @apiSuccess {boolean} isBan 是否被禁用, false: 启用，true: 禁用
    * 
@@ -88,7 +88,7 @@ router.route('/adminusers')
    * @api {post} /adminusers 新增管理员
    * @apiName createAdmin
    * @apiDescription 新增管理员
-   * @apiGroup GroupAdminUser
+   * @apiGroup AdminUser
    * @apiVersion 1.0.0
    * 
    * @apiParam {string} adminName 管理员用户名
@@ -150,10 +150,10 @@ router.route('/adminusers')
   })
 
   /**
-   * @api {delete} /adminusers/ 批量删除管理员
+   * @api {delete} /adminusers 批量删除管理员
    * @apiName deleteAdmins
    * @apiDescription 批量删除管理员
-   * @apiGroup GroupAdminUser
+   * @apiGroup AdminUser
    * @apiVersion 1.0.0
    * 
    * @apiParam {array} ids 管理员id数组
@@ -200,7 +200,7 @@ router.route('/adminusers/:id')
    * @api {put} /adminusers/:id 修改指定管理员
    * @apiName updateAdmin
    * @apiDescription 修改指定管理员
-   * @apiGroup GroupAdminUser
+   * @apiGroup AdminUser
    * @apiVersion 1.0.0
    * 
    * @apiParam {string} id 管理员id(如果不由path传递，则写在body中)
@@ -274,7 +274,7 @@ router.route('/adminusers/:id')
    * @api {delete} /adminusers/:id 删除指定管理员
    * @apiName deleteAdmin
    * @apiDescription 删除指定管理员
-   * @apiGroup GroupAdminUser
+   * @apiGroup AdminUser
    * @apiVersion 1.0.0
    * 
    * @apiParam {string} id 管理员id 
@@ -289,7 +289,14 @@ router.route('/adminusers/:id')
    *     }
    */
   .delete( (req, res) => {
-    const id = req.params.id;
+    const id = req.params.id || req.body.id || '';
+    try {
+      if (!id.length) {
+        throw new Error('缺少id参数');
+      }
+    } catch (e) {
+      return re.r400(e, e.message, res);
+    }
     const adminUsersQuery = AdminUserModel.AdminUser.findOne().where({'_id': id}).remove()
     .then(data => {
       return re.r204([], lang.NO_CONTENT, res);
@@ -298,5 +305,4 @@ router.route('/adminusers/:id')
     })
   });
   
-
 module.exports = router;

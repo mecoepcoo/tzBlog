@@ -16,6 +16,12 @@
     "getAdmins",
     "createAdmin",
     "updateAdmin",
-    "deleteAdmin"
+    "deleteAdmin",
+    "deleteAdmins",
+    "getBlogrolls",
+    "createBlogroll",
+    "updateBlogroll",
+    "deleteBlogroll",
+    "deleteBlogrolls"
   ]
 }
