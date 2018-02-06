@@ -2,7 +2,6 @@
 const express = require('express');
 const router = express.Router();
 const _ = require('lodash');
-const hash = require('../../lib/hash');
 const re = require('../../lib/response');
 const lang = require('../../config/lang');
 const BlogrollModel = require('../../models/blogroll');
@@ -212,7 +211,6 @@ router.route('/blogrolls/:id')
 
     const blogrollQuery = BlogrollModel.Blogroll.findOne().where({'_id': id}).exec()
       .then(blogroll => {
-        console.dir(blogroll);
         if (blogroll) {
           blogroll.name = name;
           blogroll.url = url;
@@ -229,7 +227,6 @@ router.route('/blogrolls/:id')
       }, err => {
         return re.r400(err, lang.ERROR, res);
       })
-
   })
 
   /**

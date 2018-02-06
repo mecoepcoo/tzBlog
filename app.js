@@ -56,6 +56,7 @@ app.all('*', function(req, res, next) {
 // api
 app.use('/api/admin', require('./api/admin/admin-user'));
 app.use('/api/admin', require('./api/admin/blogroll'));
+app.use('/api/admin', require('./api/admin/category'));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
