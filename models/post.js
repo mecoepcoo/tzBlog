@@ -36,7 +36,7 @@ const postSchema = new mongoose.Schema(
     },
     reading: {
       type: Number,
-      required: true
+      default: 0
     },
     content: {
       type: String,

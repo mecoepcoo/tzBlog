@@ -14,6 +14,6 @@ const tagSchema = new mongoose.Schema(
     collection: 'b_tag'
   });
 
-Tag = mongoose.model('Tag', categorySchema, 'b_tag');
+Tag = mongoose.model('Tag', tagSchema, 'b_tag');
 
 exports.Tag = Tag;
