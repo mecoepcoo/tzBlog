@@ -190,7 +190,8 @@ router.route('/blogrolls/:id')
    *     }
    */
   .put( (req, res) => {
-    const id = req.params.id || req.body.id || '';
+    let id = req.params.id || req.body.id || '';
+    id = id.replace(/\$/g, '');
     const name = req.body.name || '';
     const url = req.body.url || '';
     const order = +req.body.order || 1;
@@ -248,7 +249,8 @@ router.route('/blogrolls/:id')
    *     }
    */
   .delete( (req, res) => {
-    const id = req.params.id || req.body.id || '';
+    let id = req.params.id || req.body.id || '';
+    id = id.replace(/\$/g, '');
     try {
       if (!id.length) {
         throw new Error('缺少id参数');

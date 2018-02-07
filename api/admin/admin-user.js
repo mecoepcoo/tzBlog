@@ -226,7 +226,8 @@ router.route('/adminusers/:id')
    *      }
    */
   .put( (req, res) => {
-    const id = req.params.id || req.body.id || '';
+    let id = req.params.id || req.body.id || '';
+    id = id.replace(/\$/g, '');
     const adminName = req.body.adminName || '';
     const isBan = req.body.isBan;
     let password = req.body.password || '';
@@ -289,7 +290,8 @@ router.route('/adminusers/:id')
    *     }
    */
   .delete( (req, res) => {
-    const id = req.params.id || req.body.id || '';
+    let id = req.params.id || req.body.id || '';
+    id = id.replace(/\$/g, '');
     try {
       if (!id.length) {
         throw new Error('缺少id参数');

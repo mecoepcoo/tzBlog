@@ -5,6 +5,7 @@ const _ = require('lodash');
 const re = require('../../lib/response');
 const lang = require('../../config/lang');
 const TagModel = require('../../models/tag');
+const PostModel = require('../../models/post');
 
 router.route('/tags')
   .get( (req, res) => {
@@ -32,13 +33,11 @@ router.route('/tags')
         return re.r400(err, lang.DUPLICATE, res);
       })
   })
-  .delete( (req, res) => {
-
-  });
 
 router.route('/tags/:id')
   .put( (req, res) => {
-    const id = req.params.id || req.body.id || '';
+    let id = req.params.id || req.body.id || '';
+    id = id.replace(/\$/g, '');
     const name = req.body.name || '';
 
     try {
@@ -70,7 +69,24 @@ router.route('/tags/:id')
       })
   })
   .delete( (req, res) => {
+    let id = req.params.id || req.body.id || '';
+    id = id.replace(/\$/g, '');
 
+    try {
+      if (!id.length) {
+        throw new Error('缺少id参数');
+      }
+    } catch (e) {
+      return re.r400(e, e.message, res);
+    }
+
+    const postQuery = PostModel.Post.find().populate('_tag')
+      .then(data => {
+        return re.r200(data, '', 0, res);
+      }, err => {
+        return re.r400(err, 'e', res);
+      })
+    
   });
 
 module.exports = router;
