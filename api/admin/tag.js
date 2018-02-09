@@ -80,7 +80,7 @@ router.route('/tags/:id')
       return re.r400(e, e.message, res);
     }
 
-    const postQuery = PostModel.Post.find().populate('_tag')
+    const postQuery = PostModel.Post.findOne().where({  })
       .then(data => {
         return re.r200(data, '', 0, res);
       }, err => {

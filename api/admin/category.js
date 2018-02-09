@@ -102,7 +102,6 @@ router.route('/categories/:id')
       }, err => {
         return re.r400(err, lang.ERROR, res);
       })
-      
   });
 
 module.exports = router;

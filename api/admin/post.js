@@ -5,6 +5,7 @@ const _ = require('lodash');
 const re = require('../../lib/response');
 const lang = require('../../config/lang');
 const PostModel = require('../../models/post');
+const TagPostModel = require('../../models/tag-post');
 
 router.route('/posts')
   .get( (req, res) => {
@@ -47,7 +48,7 @@ router.route('/posts')
       _category: categoryId,
       _tags: JSON.parse(tagIds),
       content: content
-    }
+    };
 
     if (order && !_.isNaN(order)) {
       _.assign(postData, { order: order });
@@ -57,13 +58,29 @@ router.route('/posts')
       _.assign(postData, { date: date });
     }
 
+    const postSaved = {};
     const post = new PostModel.Post(postData);
     post.save()
       .then(data => {
-        return re.r201(data, lang.CREATE_OK, res);
+        postSaved.data = data;
+        return {
+          tagId: JSON.parse(tagIds),
+          postId: data._id
+        };
       }, err => {
         return re.r400(err, lang.ERROR, res);
       })
+      .then(tagPostData => {
+        return new TagPostModel.tagPost(tagPostData).save();
+      })
+      .then(data => {
+        return re.r201(postSaved.data, lang.CREATE_OK, res);
+      }, err => {
+        return re.r400(err, lang.ERROR, res);
+      })
+
+      
+      
   })
 
 
