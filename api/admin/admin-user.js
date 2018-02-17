@@ -23,8 +23,8 @@ router.route('/adminusers')
    * @apiGroup AdminUser
    * @apiVersion 1.0.0
    *
-   * @apiParam {number} page 页码
-   * @apiParam {number} pageSize 每页条数
+   * @apiParam {number} page=1 页码
+   * @apiParam {number} pagesize=10 每页条数
    * @apiUse STATUS
    * @apiSuccess {json} data
    * @apiSuccess {string} data.name 管理员用户名
@@ -56,7 +56,7 @@ router.route('/adminusers')
    */
   .get( (req, res) => {
     const page = +req.query.page || 1;
-    const pageSize = +req.query.pageSize || 5;
+    const pageSize = +req.query.pagesize || 10;
     const result = {};
     // 取管理员列表
     const adminUserQuery = AdminUserModel.AdminUser.find({}, '_id name createDate isBan')
@@ -203,7 +203,7 @@ router.route('/adminusers/:id')
    * @apiGroup AdminUser
    * @apiVersion 1.0.0
    * 
-   * @apiParam {string} id 管理员id(如果不由path传递，则写在body中)
+   * @apiParam {string} :id 管理员id(如果不由path传递，则写在body中)
    * @apiParam {string} adminName 新的管理员名
    * @apiParam {string} password 新的密码
    * @apiParam {boolean} isBan 是否禁用 true: 禁用，false: 启用
@@ -278,7 +278,7 @@ router.route('/adminusers/:id')
    * @apiGroup AdminUser
    * @apiVersion 1.0.0
    * 
-   * @apiParam {string} id 管理员id 
+   * @apiParam {string} :id 管理员id 
    * @apiUse STATUS
    * @apiSuccess {json} data 
    * @apiSuccessExample {json} Success - Example:

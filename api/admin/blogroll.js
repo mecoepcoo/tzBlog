@@ -166,7 +166,7 @@ router.route('/blogrolls/:id')
    * @apiGroup Blogroll
    * @apiVersion 1.0.0
    * 
-   * @apiParam {string} id 友链id(如果不由path传递，则写在body中)
+   * @apiParam {string} :id 友链id(如果不由path传递，则写在body中)
    * @apiParam {string} name 新的友链名称
    * @apiParam {string} url 新的url
    * @apiParam {number} order 新的排序，默认为1
@@ -237,7 +237,7 @@ router.route('/blogrolls/:id')
    * @apiGroup Blogroll
    * @apiVersion 1.0.0
    * 
-   * @apiParam {string} id 友链id 
+   * @apiParam {string} :id 友链id 
    * @apiUse STATUS
    * @apiSuccess {json} data 
    * @apiSuccessExample {json} Success - Example:

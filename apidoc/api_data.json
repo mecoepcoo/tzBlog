@@ -93,7 +93,7 @@
             "group": "Parameter",
             "type": "string",
             "optional": false,
-            "field": "id",
+            "field": ":id",
             "description": "<p>管理员id</p>"
           }
         ]
@@ -196,13 +196,15 @@
             "type": "number",
             "optional": false,
             "field": "page",
+            "defaultValue": "1",
             "description": "<p>页码</p>"
           },
           {
             "group": "Parameter",
             "type": "number",
             "optional": false,
-            "field": "pageSize",
+            "field": "pagesize",
+            "defaultValue": "10",
             "description": "<p>每页条数</p>"
           }
         ]
@@ -281,7 +283,7 @@
             "group": "Parameter",
             "type": "string",
             "optional": false,
-            "field": "id",
+            "field": ":id",
             "description": "<p>管理员id(如果不由path传递，则写在body中)</p>"
           },
           {
@@ -453,7 +455,7 @@
             "group": "Parameter",
             "type": "string",
             "optional": false,
-            "field": "id",
+            "field": ":id",
             "description": "<p>友链id</p>"
           }
         ]
@@ -621,7 +623,7 @@
             "group": "Parameter",
             "type": "string",
             "optional": false,
-            "field": "id",
+            "field": ":id",
             "description": "<p>友链id(如果不由path传递，则写在body中)</p>"
           },
           {
@@ -698,5 +700,938 @@
     },
     "filename": "api/admin/blogroll.js",
     "groupTitle": "友情链接"
+  },
+  {
+    "type": "post",
+    "url": "/categories",
+    "title": "新增分类",
+    "name": "createCategory",
+    "description": "<p>新增分类</p>",
+    "group": "Category",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>分类名称</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "data",
+            "description": "<p>新增的分类</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>文本信息</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success - Example:",
+          "content": "HTTP / 1.1 200 OK\n{\n    \"status\": 201,\n    \"message\": \"插入成功\",\n    \"data\": {\n        \"__v\": 0,\n        \"name\": \"操作系统\",\n        \"_id\": \"5a885bd0baa0c9183fe67799\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/admin/category.js",
+    "groupTitle": "分类"
+  },
+  {
+    "type": "delete",
+    "url": "/categories/:id",
+    "title": "删除指定分类",
+    "name": "deleteCategory",
+    "description": "<p>删除指定分类，该分类下没有文章时方可删除</p>",
+    "group": "Category",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": ":id",
+            "description": "<p>id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "data",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>文本信息</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success - Example:",
+          "content": "HTTP / 1.1 200 OK\n{\n    \"status\": 204,\n    \"message\": \"删除成功\",\n    \"data\": []\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/admin/category.js",
+    "groupTitle": "分类"
+  },
+  {
+    "type": "get",
+    "url": "/categories",
+    "title": "获取分类列表",
+    "name": "getCategories",
+    "description": "<p>获取分类列表</p>",
+    "group": "Category",
+    "version": "1.0.0",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "data",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>分类名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "total",
+            "description": "<p>固定值-1，表示不分页</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>文本信息</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success - Example:",
+          "content": "HTTP / 1.1 200 OK\n{\n    \"status\": 200,\n    \"message\": \"操作成功\",\n    \"data\": [\n        {\n            \"_id\": \"5a7b2bcd31ac4d5e1d55b0d2\",\n            \"name\": \"Node.js\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"5a7b2bcb31ac4d5e1d55b0d1\",\n            \"name\": \"Javascript\",\n            \"__v\": 0\n        }\n    ],\n    \"total\": -1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/admin/category.js",
+    "groupTitle": "分类"
+  },
+  {
+    "type": "put",
+    "url": "/categories/:id",
+    "title": "修改分类",
+    "name": "updateCategory",
+    "description": "<p>修改分类</p>",
+    "group": "Category",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": ":id",
+            "description": "<p>id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>分类名称</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "data",
+            "description": "<p>更新的分类</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>文本信息</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success - Example:",
+          "content": "HTTP / 1.1 200 OK\n{\n    \"status\": 201,\n    \"message\": \"更新成功\",\n    \"data\": {\n        \"__v\": 0,\n        \"name\": \"操作系统\",\n        \"_id\": \"5a885bd0baa0c9183fe67799\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/admin/category.js",
+    "groupTitle": "分类"
+  },
+  {
+    "type": "post",
+    "url": "/posts",
+    "title": "新增文章",
+    "name": "createPost",
+    "description": "<p>新增文章</p>",
+    "group": "Post",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "title",
+            "description": "<p>标题</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "author",
+            "description": "<p>作者</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "categoryId",
+            "description": "<p>分类id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "json",
+            "optional": false,
+            "field": "tagIds",
+            "description": "<p>标签id（json数组字符串）</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "order",
+            "description": "<p>排序</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "date",
+            "description": "<p>时间戳</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>正文</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "data",
+            "description": "<p>新增的文章</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>文本信息</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success - Example:",
+          "content": "HTTP / 1.1 200 OK\n{\n    \"status\": 201,\n    \"message\": \"插入成功\",\n    \"data\": {\n        \"__v\": 0,\n        \"title\": \"标题\",\n        \"author\": \"作者\",\n        \"_category\": \"5a7b0c259716f6209e98f3ed\",\n        \"content\": \"正文\",\n        \"_id\": \"5a88595dbaa0c9183fe67795\",\n        \"reading\": 0,\n        \"date\": 312321,\n        \"order\": 1,\n        \"_tags\": [\n            \"5a7b12ff9716f6209e98f3f1\"\n        ]\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/admin/post.js",
+    "groupTitle": "文章"
+  },
+  {
+    "type": "delete",
+    "url": "/posts/:id",
+    "title": "删除指定文章",
+    "name": "deletePost",
+    "description": "<p>删除指定文章</p>",
+    "group": "Post",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "id",
+            "description": "<p>文章id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "data",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>文本信息</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success - Example:",
+          "content": "HTTP / 1.1 200 OK\n{\n    \"status\": 204,\n    \"message\": \"删除成功\",\n    \"data\": []\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/admin/post.js",
+    "groupTitle": "文章"
+  },
+  {
+    "type": "get",
+    "url": "/posts/:id",
+    "title": "获取指定文章",
+    "name": "getPost",
+    "description": "<p>获取一篇文章</p>",
+    "group": "Post",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "id",
+            "description": "<p>id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "data",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data.title",
+            "description": "<p>文章标题</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data.author",
+            "description": "<p>作者</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "data._category",
+            "description": "<p>分类</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data._category.name",
+            "description": "<p>分类名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data.content",
+            "description": "<p>正文</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "data.reading",
+            "description": "<p>阅读量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "data.date",
+            "description": "<p>时间戳</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "data.order",
+            "description": "<p>排序，数字越大越靠前</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "data._tags",
+            "description": "<p>分类</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data._tags.name",
+            "description": "<p>分类名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "total",
+            "description": "<p>-1</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>文本信息</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success - Example:",
+          "content": "HTTP / 1.1 200 OK\n{\n    \"status\": 200,\n    \"message\": \"操作成功\",\n    \"data\": \n        {\n            \"_id\": \"5a7b18c9b6d4de46cf028efd\",\n            \"title\": \"t2\",\n            \"author\": \"t\",\n            \"_category\": 5a7b18c9b6d4de46cf028efe,\n            \"content\": \"313\",\n            \"__v\": 0,\n            \"reading\": 0,\n            \"date\": 1518016633349,\n            \"order\": 3,\n            \"_tags\": [\n                {\n                    \"_id\": \"5a7b12ff9716f6209e98f3f1\",\n                    \"name\": \"t5\",\n                    \"__v\": 0\n                }\n            ]\n        },\n    \"total\": 7\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/admin/post.js",
+    "groupTitle": "文章"
+  },
+  {
+    "type": "get",
+    "url": "/posts",
+    "title": "获取文章列表（分页）",
+    "name": "getPosts",
+    "description": "<p>获取文章列表</p>",
+    "group": "Post",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "page",
+            "defaultValue": "1",
+            "description": "<p>页码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "pagesize",
+            "defaultValue": "10",
+            "description": "<p>每页条数</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "data",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data.title",
+            "description": "<p>文章标题</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data.author",
+            "description": "<p>作者</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "object",
+            "optional": false,
+            "field": "data._category",
+            "description": "<p>分类</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data._category.name",
+            "description": "<p>分类名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data.content",
+            "description": "<p>正文</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "data.reading",
+            "description": "<p>阅读量</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "data.date",
+            "description": "<p>时间戳</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "data.order",
+            "description": "<p>排序，数字越大越靠前</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "array",
+            "optional": false,
+            "field": "data._tags",
+            "description": "<p>分类</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data._tags.name",
+            "description": "<p>分类名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "total",
+            "description": "<p>总条数</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>文本信息</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success - Example:",
+          "content": "HTTP / 1.1 200 OK\n{\n    \"status\": 200,\n    \"message\": \"操作成功\",\n    \"data\": [\n        {\n            \"_id\": \"5a7b18c9b6d4de46cf028efd\",\n            \"title\": \"t2\",\n            \"author\": \"t\",\n            \"_category\": 5a7b18c9b6d4de46cf028efe,\n            \"content\": \"313\",\n            \"__v\": 0,\n            \"reading\": 0,\n            \"date\": 1518016633349,\n            \"order\": 3,\n            \"_tags\": [\n                {\n                    \"_id\": \"5a7b12ff9716f6209e98f3f1\",\n                    \"name\": \"t5\",\n                    \"__v\": 0\n                }\n            ]\n        }\n    ],\n    \"total\": 7\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/admin/post.js",
+    "groupTitle": "文章"
+  },
+  {
+    "type": "put",
+    "url": "/posts/:id",
+    "title": "修改文章",
+    "name": "updatePost",
+    "description": "<p>修改文章</p>",
+    "group": "Post",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": ":id",
+            "description": "<p>标题</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "title",
+            "description": "<p>标题</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "author",
+            "description": "<p>作者</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "categoryId",
+            "description": "<p>分类id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "json",
+            "optional": false,
+            "field": "tagIds",
+            "description": "<p>标签id（json数组字符串）</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "order",
+            "description": "<p>排序</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "number",
+            "optional": false,
+            "field": "date",
+            "description": "<p>时间戳</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "content",
+            "description": "<p>正文</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "data",
+            "description": "<p>更新的文章</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>文本信息</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success - Example:",
+          "content": "HTTP / 1.1 200 OK\n{\n    \"status\": 201,\n    \"message\": \"更新成功\",\n    \"data\": {\n        \"__v\": 0,\n        \"title\": \"标题\",\n        \"author\": \"作者\",\n        \"_category\": \"5a7b0c259716f6209e98f3ed\",\n        \"content\": \"正文\",\n        \"_id\": \"5a88595dbaa0c9183fe67795\",\n        \"reading\": 0,\n        \"date\": 312321,\n        \"order\": 1,\n        \"_tags\": [\n            \"5a7b12ff9716f6209e98f3f1\"\n        ]\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/admin/post.js",
+    "groupTitle": "文章"
+  },
+  {
+    "type": "post",
+    "url": "/tags",
+    "title": "新增标签",
+    "name": "createTag",
+    "description": "<p>新增标签</p>",
+    "group": "Tag",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>标签名称</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "data",
+            "description": "<p>新增的标签</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>文本信息</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success - Example:",
+          "content": "HTTP / 1.1 200 OK\n{\n    \"status\": 201,\n    \"message\": \"插入成功\",\n    \"data\": {\n        \"__v\": 0,\n        \"name\": \"js\",\n        \"_id\": \"5a885bd0baa0c9183fe67799\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/admin/tag.js",
+    "groupTitle": "标签"
+  },
+  {
+    "type": "delete",
+    "url": "/tags/:id",
+    "title": "删除指定标签",
+    "name": "deleteTag",
+    "description": "<p>删除指定标签，该标签下没有文章时方可删除</p>",
+    "group": "Tag",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": ":id",
+            "description": "<p>id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "data",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>文本信息</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success - Example:",
+          "content": "HTTP / 1.1 200 OK\n{\n    \"status\": 204,\n    \"message\": \"删除成功\",\n    \"data\": []\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/admin/tag.js",
+    "groupTitle": "标签"
+  },
+  {
+    "type": "get",
+    "url": "/tags",
+    "title": "获取标签列表",
+    "name": "getTags",
+    "description": "<p>获取标签列表</p>",
+    "group": "Tag",
+    "version": "1.0.0",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "data",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>标签名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "total",
+            "description": "<p>固定值-1，表示不分页</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>文本信息</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success - Example:",
+          "content": "HTTP / 1.1 200 OK\n{\n    \"status\": 200,\n    \"message\": \"操作成功\",\n    \"data\": [\n        {\n            \"_id\": \"5a7b2bcd31ac4d5e1d55b0d2\",\n            \"name\": \"Node.js\",\n            \"__v\": 0\n        },\n        {\n            \"_id\": \"5a7b2bcb31ac4d5e1d55b0d1\",\n            \"name\": \"Javascript\",\n            \"__v\": 0\n        }\n    ],\n    \"total\": -1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/admin/tag.js",
+    "groupTitle": "标签"
+  },
+  {
+    "type": "put",
+    "url": "/tags/:id",
+    "title": "修改标签",
+    "name": "updateTag",
+    "description": "<p>修改标签</p>",
+    "group": "Tag",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": ":id",
+            "description": "<p>id</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "name",
+            "description": "<p>标签名称</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "data",
+            "description": "<p>更新的标签</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>文本信息</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success - Example:",
+          "content": "HTTP / 1.1 200 OK\n{\n    \"status\": 201,\n    \"message\": \"更新成功\",\n    \"data\": {\n        \"__v\": 0,\n        \"name\": \"操作系统\",\n        \"_id\": \"5a885bd0baa0c9183fe67799\"\n    }\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/admin/tag.js",
+    "groupTitle": "标签"
   }
 ]
