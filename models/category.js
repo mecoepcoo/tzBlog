@@ -14,6 +14,11 @@ const categorySchema = new mongoose.Schema(
     collection: 'b_category'
   });
 
+// 静态方法示例
+categorySchema.static('findCategories', function() {
+  return this.find().exec();
+})
+
 Category = mongoose.model('Category', categorySchema, 'b_category');
 
 exports.Category = Category;

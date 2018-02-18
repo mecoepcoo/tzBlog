@@ -60,6 +60,10 @@ app.use('/api/admin', require('./api/admin/category'));
 app.use('/api/admin', require('./api/admin/tag'));
 app.use('/api/admin', require('./api/admin/post'));
 
+app.use('/api/home', require('./api/home/category'));
+app.use('/api/home', require('./api/home/post'));
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
