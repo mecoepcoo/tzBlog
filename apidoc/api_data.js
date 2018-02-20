@@ -1211,6 +1211,20 @@ define({ "api": [
             "field": "pagesize",
             "defaultValue": "10",
             "description": "<p>每页条数</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "categoryid",
+            "description": "<p>分类id，根据分类筛选，不能与标签筛选同时使用</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": true,
+            "field": "tagid",
+            "description": "<p>标签id，根据标签筛选，不能与分类筛选同时使用</p>"
           }
         ]
       }

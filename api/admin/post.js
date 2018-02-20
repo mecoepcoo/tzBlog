@@ -25,6 +25,8 @@ router.route('/posts')
    *
    * @apiParam {number} page=1 页码
    * @apiParam {number} pagesize=10 每页条数
+   * @apiParam {string} [categoryid] 分类id，根据分类筛选，不能与标签筛选同时使用
+   * @apiParam {string} [tagid] 标签id，根据标签筛选，不能与分类筛选同时使用
    * @apiUse STATUS
    * @apiSuccess {json} data
    * @apiSuccess {string} data.title 文章标题
@@ -72,36 +74,52 @@ router.route('/posts')
     const pageSize = +req.query.pagesize || 10;
     const result = {};
 
-    // 取文章列表
-    const postQuery = PostModel.Post.find()
-      .sort({ order: -1, date: -1 })
-      .skip((page - 1) * pageSize)
-      .limit(pageSize)
-      .populate([
-        {
-          path: '_category',
-        },
-        {
-          path: '_tags',
-        }
-      ])
-      .then(posts => {
-        result.posts = posts;
-      }, err => {
-        return re.r404(err, lang.NOT_FOUND, res);
-      });
-    // 取文章总数
-    const postCountQuery = PostModel.Post.count()
-      .then(count => {
-        result.total = count;
-      }, err => {
-        return re.r404(err, lang.NOT_FOUND, res);
-      });
+    if (categoryId) {
+      PostModel.Post.findByCategory(categoryId, page, pageSize)
+        .then(data => {
+          return re.r200(data[0], lang.OK, data[1], res);
+        }, err => {
+          return re.r404(err, lang.NOT_FOUND, res);
+        })
+    } else if (tagId) {
+      PostModel.Post.findByTag(tagId, page, pageSize)
+        .then(data => {
+          return re.r200(data[0], lang.OK, data[1], res);
+        }, err => {
+          return re.r404(err, lang.NOT_FOUND, res);
+        });
+    } else {
+      // 取文章列表
+      const postQuery = PostModel.Post.find()
+        .sort({ order: -1, date: -1 })
+        .skip((page - 1) * pageSize)
+        .limit(pageSize)
+        .populate([
+          {
+            path: '_category',
+          },
+          {
+            path: '_tags',
+          }
+        ])
+        .then(posts => {
+          result.posts = posts;
+        }, err => {
+          return re.r404(err, lang.NOT_FOUND, res);
+        });
+      // 取文章总数
+      const postCountQuery = PostModel.Post.count()
+        .then(count => {
+          result.total = count;
+        }, err => {
+          return re.r404(err, lang.NOT_FOUND, res);
+        });
 
-    Promise.all([postQuery, postCountQuery])
-      .then(() => {
-        return re.r200(result.posts, lang.OK, result.total, res);
-      })
+      Promise.all([postQuery, postCountQuery])
+        .then(() => {
+          return re.r200(result.posts, lang.OK, result.total, res);
+        })
+    }
   })
   
   /**

@@ -47,6 +47,56 @@ const postSchema = new mongoose.Schema(
     collection: 'b_post'
   });
 
+/**
+ * 根据分类id筛选文章
+ */
+postSchema.static('findByCategory', function (categoryId, page = 1, pageSize = 10) {
+  const postQuery = this.find()
+    .where({ _category: categoryId })
+    .sort({ order: -1, date: -1 })
+    .skip((page - 1) * pageSize)
+    .limit(pageSize)
+    .populate([
+      {
+        path: '_category',
+      },
+      {
+        path: '_tags',
+      }
+    ])
+
+  const postCountQuery = this.find()
+    .where({ _category: categoryId })
+    .count()
+
+  return Promise.all([postQuery, postCountQuery]);
+})
+
+/**
+ * 根据分类id筛选文章
+ */
+postSchema.static('findByTag', function (tagId, page = 1, pageSize = 10) {
+  const postQuery = this.find()
+    .where({ _tags: tagId })
+    .sort({ order: -1, date: -1 })
+    .skip((page - 1) * pageSize)
+    .limit(pageSize)
+    .populate([
+      {
+        path: '_category',
+      },
+      {
+        path: '_tags',
+      }
+    ])
+
+  const postCountQuery = this.find()
+    .where({ _tags: tagId })
+    .count()
+
+  return Promise.all([postQuery, postCountQuery]);
+})
+
 Post = mongoose.model('Post', postSchema, 'b_post');
 
 exports.Post = Post;

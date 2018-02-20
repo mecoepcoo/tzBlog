@@ -62,6 +62,7 @@ app.use('/api/admin', require('./api/admin/post'));
 
 app.use('/api/home', require('./api/home/category'));
 app.use('/api/home', require('./api/home/post'));
+app.use('/api/home', require('./api/home/tag'));
 
 
 // catch 404 and forward to error handler
