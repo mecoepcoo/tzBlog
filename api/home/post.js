@@ -6,7 +6,69 @@ const re = require('../../lib/response');
 const lang = require('../../config/lang');
 const PostModel = require('../../models/post');
 
+/**
+ * @apiDefine PostHome 文章
+ */
+
+/**
+ * @apiDefine STATUS
+ * @apiSuccess {string} message 文本信息
+ */
+
 router.route('/posts')
+  /**
+   * @api {get} /posts 获取文章列表（分页）
+   * @apiName getPostsHome
+   * @apiDescription 获取文章列表
+   * @apiGroup PostHome
+   * @apiVersion 1.0.0
+   *
+   * @apiParam {number} page=1 页码
+   * @apiParam {number} pagesize=10 每页条数
+   * @apiParam {string} [categoryid] 分类id，根据分类筛选，不能与标签筛选同时使用
+   * @apiParam {string} [tagid] 标签id，根据标签筛选，不能与分类筛选同时使用
+   * @apiUse STATUS
+   * @apiSuccess {json} data
+   * @apiSuccess {string} data.title 文章标题
+   * @apiSuccess {string} data.author 作者
+   * @apiSuccess {object} data._category 分类
+   * @apiSuccess {string} data._category.name 分类名称
+   * @apiSuccess {string} data.content 正文
+   * @apiSuccess {number} data.reading 阅读量
+   * @apiSuccess {number} data.date 时间戳
+   * @apiSuccess {number} data.order 排序，数字越大越靠前
+   * @apiSuccess {array} data._tags 分类
+   * @apiSuccess {string} data._tags.name 分类名称
+   * @apiSuccess {number} total 总条数
+   * 
+   * @apiSuccessExample {json} Success - Example:
+   *     HTTP / 1.1 200 OK
+   *     {
+   *         "status": 200,
+   *         "message": "操作成功",
+   *         "data": [
+   *             {
+   *                 "_id": "5a7b18c9b6d4de46cf028efd",
+   *                 "title": "t2",
+   *                 "author": "t",
+   *                 "_category": 5a7b18c9b6d4de46cf028efe,
+   *                 "content": "313",
+   *                 "__v": 0,
+   *                 "reading": 0,
+   *                 "date": 1518016633349,
+   *                 "order": 3,
+   *                 "_tags": [
+   *                     {
+   *                         "_id": "5a7b12ff9716f6209e98f3f1",
+   *                         "name": "t5",
+   *                         "__v": 0
+   *                     }
+   *                 ]
+   *             }
+   *         ],
+   *         "total": 7
+   *     }
+   */
   .get( (req, res) => {
     const page = +req.query.page || 1;
     const pageSize = +req.query.pagesize || 10;

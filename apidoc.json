@@ -29,7 +29,7 @@
     "createTag",
     "updateTag",
     "deleteTag",
-    "Admin",
+    "AdminUser",
     "getAdmins",
     "createAdmin",
     "updateAdmin",
@@ -40,6 +40,12 @@
     "createBlogroll",
     "updateBlogroll",
     "deleteBlogroll",
-    "deleteBlogrolls"
+    "deleteBlogrolls",
+    "PostHome",
+    "getPostsHome",
+    "CategoryHome",
+    "getCategoriesHome",
+    "TagHome",
+    "getTagsHome"
   ]
 }

@@ -23,3 +23,7 @@ nodejs + express + mongodb + ngular4 + ng-zorro制作的个人博客项目。
 生成文档：
 
     $ sudo npm run builddoc
+
+## 接口调用
+- 后台接口：调用时地址需追加`/api/admin`，例：`http://localhost:3000/api/admin/posts`
+- 前台接口：调用时地址需追加`/api/home`，例：`http://localhost:3000/api/home/tags`
