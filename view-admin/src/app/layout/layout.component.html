@@ -1,0 +1,65 @@
+<nz-layout>
+  <nz-sider nzCollapsible [(nzCollapsed)]="isCollapsed">
+    <div class="logo">
+      <a routerLink="/admin">
+        <i class="anticon anticon-home"></i>
+      </a>
+    </div>
+    <ul nz-menu [nzTheme]="'dark'" [nzMode]="isCollapsed?'vertical':'inline'">
+      <li nz-submenu>
+        <span title>
+          <i class="anticon anticon-area-chart"></i>
+          <span class="nav-text">系统管理</span>
+        </span>
+        <ul>
+          <li nz-menu-item routerLink="/admin/adminuser">系统信息</li>
+          <li nz-menu-item routerLink="/admin/blogroll">友情链接</li>
+        </ul>
+      </li>
+      <li nz-submenu>
+        <span title>
+          <i class="anticon anticon-user"></i>
+          <span class="nav-text">用户管理</span>
+        </span>
+        <ul>
+          <li nz-menu-item routerLink="/admin/adminuser">管理员</li>
+          <li nz-menu-item routerLink="/admin/admingroup">管理组</li>
+        </ul>
+      </li>
+      <li nz-submenu>
+        <span title>
+          <i class="anticon anticon-file-text"></i>
+          <span class="nav-text">内容管理</span>
+        </span>
+        <ul>
+          <li nz-menu-item routerLink="/admin/post">文章管理</li>
+          <li nz-menu-item routerLink="/admin/edit">新增文章</li>
+          <li nz-menu-item routerLink="/admin/category">分类管理</li>
+          <li nz-menu-item routerLink="/admin/tag">标签管理</li>
+        </ul>
+      </li>
+      <li nz-menu-item>
+        <span>
+          <i class="anticon anticon-file"></i>
+          <span class="nav-text">File</span>
+        </span>
+      </li>
+    </ul>
+  </nz-sider>
+  <nz-layout>
+    <nz-header style="background: #fff; padding:0;">
+      <div class="header-left">欢迎 {{ admin }}</div>
+      <div class="header-right" (click)="doLogout()">
+        <i class="anticon anticon-poweroff"></i>
+        <span class="logout">退出登录</span>
+      </div>
+    </nz-header>
+    <nz-content style="margin:0 16px;">
+      <app-bread-crumb></app-bread-crumb>
+      <div style="padding:24px; background: #fff; min-height: 360px;">
+        <router-outlet></router-outlet>
+      </div>
+    </nz-content>
+    <nz-footer style="text-align: center;"> ©2017-2018 Tianzhen. All Rights Reserved.</nz-footer>
+  </nz-layout>
+</nz-layout>

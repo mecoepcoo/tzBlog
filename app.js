@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 var index = require('./routes/index');
 var users = require('./routes/users');
@@ -53,7 +54,16 @@ app.all('*', function(req, res, next) {
   next();
 });
 
+app.use(session({
+  name: 'blog',
+  secret: 'helloworld',
+  resave: true,
+  saveUninitialized: true,
+  captcha: '',
+}));
+
 // api
+app.use('/api/admin', require('./api/admin/login'));
 app.use('/api/admin', require('./api/admin/admin-user'));
 app.use('/api/admin', require('./api/admin/blogroll'));
 app.use('/api/admin', require('./api/admin/category'));
@@ -63,6 +73,7 @@ app.use('/api/admin', require('./api/admin/post'));
 app.use('/api/home', require('./api/home/category'));
 app.use('/api/home', require('./api/home/post'));
 app.use('/api/home', require('./api/home/tag'));
+app.use('/api/home', require('./api/home/blogroll'));
 
 
 // catch 404 and forward to error handler

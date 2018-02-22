@@ -1,0 +1,65 @@
+:host ::ng-deep .logo {
+  height: 32px;
+  background: #333;
+  border-radius: 6px;
+  margin: 16px;
+}
+
+:host ::ng-deep .ant-layout-sider-collapsed .nav-text {
+  display: none;
+}
+
+:host ::ng-deep .ant-layout-sider-collapsed .ant-menu-submenu-title:after {
+  display: none;
+}
+
+:host ::ng-deep .ant-layout-sider-collapsed .anticon {
+  font-size: 16px;
+  margin-left: 8px;
+}
+
+nz-layout {
+  min-height: 100%;
+}
+.logo {
+  color: #fff;
+  text-align: center;
+  line-height: 36px;
+  a {
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+    color: #fff;
+    &:hover {
+      color: #108ee9;
+    }
+    .anticon {
+      margin: 0;
+      font-size: 20px;
+    }
+  }
+}
+nz-sider {
+  user-select: none;
+}
+nz-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 16px;
+  font-size: 16px;
+  user-select: none;
+  .header-left {
+    padding: 0 16px;
+    width: 300px;
+  }
+  .header-right {
+    padding: 0 16px;
+    cursor: pointer;
+    transition: color .3s ease;
+    &:hover {
+      color: #108ee9;
+    }
+  }
+}

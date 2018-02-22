@@ -355,6 +355,72 @@
     "groupTitle": "管理员"
   },
   {
+    "type": "get",
+    "url": "/blogrolls",
+    "title": "获取友链列表",
+    "name": "getBlogrollsHome",
+    "description": "<p>获取友链列表</p>",
+    "group": "BlogrollHome",
+    "version": "1.0.0",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "data",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>友链名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data.url",
+            "description": "<p>链接</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "data.order",
+            "description": "<p>排序，数字越大则位序越前</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "number",
+            "optional": false,
+            "field": "total",
+            "description": "<p>-1</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>文本信息</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success - Example:",
+          "content": "HTTP / 1.1 200 OK\n{\n    \"status\": 200,\n    \"message\": \"操作成功\",\n    \"data\": [\n        {\n            \"_id\": \"5a708c1ef634623dc6d73770\",\n            \"name\": \"tianzhen\",\n            \"url\": \"http://www.tianzhen.tech\",\n            \"order\": 2\n        }\n    ],\n    \"total\": -1\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/home/blogroll.js",
+    "groupTitle": "友情链接（客户端）"
+  },
+  {
     "type": "post",
     "url": "/blogrolls",
     "title": "新增友链",

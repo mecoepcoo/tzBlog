@@ -46,6 +46,8 @@
     "CategoryHome",
     "getCategoriesHome",
     "TagHome",
-    "getTagsHome"
+    "getTagsHome",
+    "BlogrollHome",
+    "getBlogrollsHome"
   ]
 }

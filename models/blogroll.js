@@ -21,6 +21,10 @@ const blogrollSchema = new mongoose.Schema(
     collection: 'b_blogroll'
   });
 
+blogrollSchema.static('findBlogroll', function () {
+  return this.find().exec();
+})
+
 Blogroll = mongoose.model('Blogroll', blogrollSchema, 'b_blogroll');
 
 exports.Blogroll = Blogroll;

@@ -72,6 +72,8 @@ router.route('/posts')
   .get( (req, res) => {
     const page = +req.query.page || 1;
     const pageSize = +req.query.pagesize || 10;
+    const categoryId = req.query.categoryId || '';
+    const tagId = req.query.tagId || '';
     const result = {};
 
     if (categoryId) {

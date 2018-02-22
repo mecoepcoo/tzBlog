@@ -1,0 +1,5 @@
+<nz-breadcrumb style="margin:12px 0;">
+  <nz-breadcrumb-item *ngFor="let breadcrumb of breadcrumbs">
+    <a [routerLink]="[breadcrumb.url, breadcrumb.params]">{{ breadcrumb.label }}</a>
+  </nz-breadcrumb-item>
+</nz-breadcrumb>
