@@ -1,16 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BlogrollService } from './blogroll.service';
+import { NzMessageService } from 'ng-zorro-antd';
 
 export class Blogroll {
-  id: String;
-  name: String;
-  url: String;
+  id?: string;
+  name: string;
+  url: string;
+  order: number;
 }
 
 @Component({
   selector: 'app-blogroll',
   templateUrl: './blogroll.component.html',
-  styleUrls: ['./blogroll.component.css'],
+  styleUrls: [
+    '../../share/css/init.css',
+    './blogroll.component.css'
+  ],
   providers: [
     BlogrollService
   ]
@@ -27,6 +33,9 @@ export class BlogrollComponent implements OnInit {
   _total = 1;
   _current = 1;
   _pageSize = 10;
+
+  addBlogrollForm: FormGroup;
+  _addBlogrollLoading = false;
 
   _refreshStatus() {
     const allChecked = this._dataSet.every(value => value.checked === true);
@@ -55,13 +64,35 @@ export class BlogrollComponent implements OnInit {
     }, 1000);
   }
 
+  refreshData(reset = false) {
+    if (reset) {
+      this._current = 1;
+    }
+    this._loading = true;
+    this.getBlogroll();
+  }
+
   constructor(
-    private _blogrollService: BlogrollService
+    private fb: FormBuilder,
+    private _blogrollService: BlogrollService,
+    private _message: NzMessageService
   ) {
   }
 
   ngOnInit() {
     this.getBlogroll();
+
+    this.addBlogrollForm = this.fb.group({
+      linkName: [null, [Validators.required]],
+      siteLink: [null, [
+        Validators.required,
+        Validators.pattern('^(http://|https://).+')
+      ]],
+      linkOrder: [0, [
+        Validators.required,
+        Validators.pattern('^(0|[1-9][0-9]*)$')
+      ]]
+    });
   }
 
   getBlogroll() {
@@ -73,12 +104,32 @@ export class BlogrollComponent implements OnInit {
             id: blogroll._id,
             name: blogroll.name,
             url: blogroll.url,
+            order: blogroll.order
           };
           this._dataSet.push(blogrollEle);
         });
         this._loading = false;
       }, error => {
         console.error(error);
+      });
+  }
+
+  addBlogroll() {
+    this._addBlogrollLoading = true;
+    const newBlogroll = this.addBlogrollForm.value;
+    this._blogrollService.addBlogroll(newBlogroll.linkName, newBlogroll.siteLink, newBlogroll.linkOrder)
+      .subscribe(data => {
+        this._addBlogrollLoading = false;
+        const blogroll = data.data;
+        if (data.status === 201) {
+          this.refreshData();
+          this._message.create('success', data.message);
+        } else {
+          this._message.create('error', data.message, { nzDuration: 3000 });
+        }
+      }, err => {
+        this._addBlogrollLoading = false;
+        this._message.create('error', '网络连接异常');
       });
   }
 

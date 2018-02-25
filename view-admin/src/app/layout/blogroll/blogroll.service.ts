@@ -18,4 +18,14 @@ export class BlogrollService {
     const url = `${Config.apiRoot}blogrolls`;
     return this.http.get(url);
   }
+
+  /* 新增友链 */
+  addBlogroll(name: string, link: string, order: number): Observable<any> {
+    const url = `${Config.apiRoot}blogrolls`;
+    return this.http.post(url, {
+      name: name,
+      url: link,
+      order: order
+    });
+  }
 }
