@@ -1,13 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { BlogrollService } from './blogroll.service';
 import { NzMessageService } from 'ng-zorro-antd';
+import * as _ from 'lodash';
 
 export class Blogroll {
   id?: string;
   name: string;
   url: string;
   order: number;
+  _editable?: boolean;
 }
 
 @Component({
@@ -35,7 +37,15 @@ export class BlogrollComponent implements OnInit {
   _pageSize = 10;
 
   addBlogrollForm: FormGroup;
+  editBlogrollForm: FormGroup;
   _addBlogrollLoading = false;
+  _editBlogrollLoading = false;
+  _editNewData;
+  _editNewDataValidator = {
+    name: false,
+    url: false,
+    order: false
+  };
 
   _refreshStatus() {
     const allChecked = this._dataSet.every(value => value.checked === true);
@@ -57,7 +67,7 @@ export class BlogrollComponent implements OnInit {
 
   _operateData() {
     this._operating = true;
-    setTimeout(_ => {
+    setTimeout(() => {
       this._dataSet.forEach(value => value.checked = false);
       this._refreshStatus();
       this._operating = false;
@@ -82,6 +92,7 @@ export class BlogrollComponent implements OnInit {
   ngOnInit() {
     this.getBlogroll();
 
+    // 新增友链的表单校验
     this.addBlogrollForm = this.fb.group({
       linkName: [null, [Validators.required]],
       siteLink: [null, [
@@ -95,6 +106,50 @@ export class BlogrollComponent implements OnInit {
     });
   }
 
+  _editData(id) {
+    _.forEach(this._dataSet, (data, index) => {
+      data._editable = false;
+    });
+    this._editNewData = _.cloneDeep(_.assign(_.find(this._dataSet, { id: id }), { _editable: true }));
+    console.log(this._editNewData);
+  }
+
+  _saveEditData() {
+    // 校验name
+    if (this._editNewData.name.length === 0) {
+      return this._message.create('error', '请填写链接名称', { nzDuration: 3000 });
+    }
+    // 校验url，url需以http或https协议开头
+    if (!/^(http:\/\/|https:\/\/).+/.test(this._editNewData.url)) {
+      return this._message.create('error', '请正确填写链接url，url应该包含协议', { nzDuration: 3000 });
+    }
+    // 校验order，order为自然数
+    if (!/^(0|[1-9][0-9]*)$/.test(this._editNewData.order)) {
+      return this._message.create('error', '排序应该是自然数', { nzDuration: 3000 });
+    }
+    this._editBlogrollLoading = true;
+    this._blogrollService.editBlogroll(this._editNewData.id, this._editNewData.name, this._editNewData.url, this._editNewData.order)
+      .subscribe(data => {
+        this._editBlogrollLoading = false;
+        if (data.status === 201) {
+          this.refreshData();
+          this._message.create('success', data.message);
+        } else {
+          this._message.create('error', data.message, { nzDuration: 3000 });
+        }
+      }, err => {
+        this._editBlogrollLoading = false;
+        this._message.create('error', '网络连接异常');
+      });
+  }
+
+  _cancelEditData() {
+    _.forEach(this._dataSet, (data, index) => {
+      data._editable = false;
+    });
+    this._editNewData = {};
+  }
+
   getBlogroll() {
     this._blogrollService.getBlogroll()
       .subscribe(blogrolls => {
@@ -104,13 +159,15 @@ export class BlogrollComponent implements OnInit {
             id: blogroll._id,
             name: blogroll.name,
             url: blogroll.url,
-            order: blogroll.order
+            order: blogroll.order,
+            _editable: false
           };
           this._dataSet.push(blogrollEle);
         });
         this._loading = false;
       }, error => {
         console.error(error);
+        this._message.create('error', '网络连接异常');
       });
   }
 

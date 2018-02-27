@@ -20,9 +20,19 @@ export class BlogrollService {
   }
 
   /* 新增友链 */
-  addBlogroll(name: string, link: string, order: number): Observable<any> {
+  addBlogroll(name: string, link: string, order: number | string): Observable<any> {
     const url = `${Config.apiRoot}blogrolls`;
     return this.http.post(url, {
+      name: name,
+      url: link,
+      order: order
+    });
+  }
+
+  /* 修改友链 */
+  editBlogroll(id: string, name: string, link: string, order: number | string): Observable<any> {
+    const url = `${Config.apiRoot}blogrolls/${id}`;
+    return this.http.put(url, {
       name: name,
       url: link,
       order: order

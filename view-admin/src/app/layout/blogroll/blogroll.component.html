@@ -1,8 +1,3 @@
-<!-- <div style="margin-bottom: 16px;">
-  <button nz-button [disabled]="_disabledButton" [nzType]="'primary'" [nzLoading]="_operating" (click)="_operateData()">Operating</button>
-  <span style="margin-left: 8px;" *ngIf="_checkedNumber">Selected {{_checkedNumber}} items</span>
-</div> -->
-
 <nz-collapseset [nzBordered]="false" class="collapse-head">
   <nz-collapse [nzTitle]="'新增友链'" nzActive="false">
     <form nz-form [nzType]="'horizontal'" [formGroup]="addBlogrollForm">
@@ -43,6 +38,11 @@
   </nz-collapse>
 </nz-collapseset>
 
+<div style="margin: 16px 0;">
+  <button nz-button [disabled]="_disabledButton" [nzType]="'primary'" [nzLoading]="_operating" (click)="_operateData()">批量删除</button>
+  <span style="margin-left: 8px;" *ngIf="_checkedNumber">已选中 {{_checkedNumber}} 个项目</span>
+</div>
+
 <nz-table #nzTable [nzDataSource]="_dataSet" nzShowTotal [nzShowSizeChanger]="true" [nzShowQuickJumper]="true" [nzLoading]="_loading"
   [nzTotal]="_total" [(nzPageSize)]="_pageSize" [(nzPageIndex)]="_current" (nzPageIndexChange)="_refreshStatus()" [nzPageSize]="_pageSize"
   (nzPageSizeChange)="_refreshStatus()">
@@ -76,14 +76,33 @@
         </label>
       </td>
       <td nz-td>{{i+1}}</td>
-      <td nz-td>{{data.name}}</td>
-      <td nz-td><a href="{{data.url}}" target="_blank">{{data.url}}</a></td>
-      <td nz-td>{{data.order}}</td>
       <td nz-td>
-        <button nz-button [nzType]="'primary'">
+        <span *ngIf="!data._editable">{{data.name}}</span>
+        <nz-input [(ngModel)]="_editNewData.name" nzPlaceHolder="链接名称" [nzSize]="'large'" *ngIf="data._editable"></nz-input>
+      </td>
+      <td nz-td>
+        <a *ngIf="!data._editable" href="{{data.url}}" target="_blank">{{data.url}}</a>
+        <nz-input [(ngModel)]="_editNewData.url" nzPlaceHolder="链接地址" [nzSize]="'large'" *ngIf="data._editable"></nz-input>
+      </td>
+      <td nz-td>
+        <span *ngIf="!data._editable">{{data.order}}</span>
+        <nz-input-number [(ngModel)]="_editNewData.order" [nzMin]="0" [nzStep]="1" nzSize="large" *ngIf="data._editable"></nz-input-number>
+      </td>
+      <td nz-td>
+        <button nz-button [nzType]="'primary'" *ngIf="!data._editable" (click)="_editData(data.id)">
+          <i class="anticon anticon-edit"></i>
           <span>修改</span>
         </button>
+        <button nz-button [nzType]="'primary'" *ngIf="data._editable" [nzLoading]="_editBlogrollLoading" (click)="_saveEditData()">
+          <i class="anticon anticon-save"></i>
+          <span>保存</span>
+        </button>
+        <button nz-button [nzType]="'dashed'" *ngIf="data._editable" (click)="_cancelEditData()">
+          <i class="anticon anticon-close"></i>
+          <span>取消</span>
+        </button>
         <button nz-button [nzType]="'danger'">
+          <i class="anticon anticon-delete"></i>
           <span>删除</span>
         </button>
       </td>
