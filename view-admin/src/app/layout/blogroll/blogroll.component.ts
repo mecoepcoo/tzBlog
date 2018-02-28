@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { BlogrollService } from './blogroll.service';
-import { NzMessageService } from 'ng-zorro-antd';
+import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import * as _ from 'lodash';
 
 export class Blogroll {
@@ -65,15 +65,6 @@ export class BlogrollComponent implements OnInit {
     this._refreshStatus();
   }
 
-  _operateData() {
-    this._operating = true;
-    setTimeout(() => {
-      this._dataSet.forEach(value => value.checked = false);
-      this._refreshStatus();
-      this._operating = false;
-    }, 1000);
-  }
-
   refreshData(reset = false) {
     if (reset) {
       this._current = 1;
@@ -85,7 +76,8 @@ export class BlogrollComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private _blogrollService: BlogrollService,
-    private _message: NzMessageService
+    private _message: NzMessageService,
+    private _modalService: NzModalService
   ) {
   }
 
@@ -111,10 +103,10 @@ export class BlogrollComponent implements OnInit {
       data._editable = false;
     });
     this._editNewData = _.cloneDeep(_.assign(_.find(this._dataSet, { id: id }), { _editable: true }));
-    console.log(this._editNewData);
   }
 
-  _saveEditData() {
+  /* 修改 */
+  saveEditData() {
     // 校验name
     if (this._editNewData.name.length === 0) {
       return this._message.create('error', '请填写链接名称', { nzDuration: 3000 });
@@ -150,6 +142,7 @@ export class BlogrollComponent implements OnInit {
     this._editNewData = {};
   }
 
+  /* 获取 */
   getBlogroll() {
     this._blogrollService.getBlogroll()
       .subscribe(blogrolls => {
@@ -171,6 +164,7 @@ export class BlogrollComponent implements OnInit {
       });
   }
 
+  /* 新增 */
   addBlogroll() {
     this._addBlogrollLoading = true;
     const newBlogroll = this.addBlogrollForm.value;
@@ -190,4 +184,70 @@ export class BlogrollComponent implements OnInit {
       });
   }
 
+  /**
+   * 弹出删除友链确认对话框
+   * @param id
+   * @param name 友链名称
+   */
+  removeBlogrollModal(id: string, name: string) {
+    this._modalService.confirm({
+      title: `是否要删除友链“${name}”`,
+      content: '<b>删除后不可恢复</b>',
+      showConfirmLoading: true,
+      onOk: () => {
+        this.removeBlogroll(id);
+      }
+    });
+  }
+
+  /* 删除单条 */
+  removeBlogroll(id: string) {
+    this._blogrollService.removeBlogroll(id)
+      .subscribe(data => {
+        if (data.status === 204) {
+          this.refreshData();
+        } else {
+          this._message.create('error', data.message, { nzDuration: 3000 });
+        }
+      }, err => {
+        this._addBlogrollLoading = false;
+        this._message.create('error', '网络连接异常');
+      });
+  }
+
+ /* 弹出删除多条友链确认对话框 */
+  removeBlogrollsModal() {
+    let ids: any = [];
+    this._dataSet.forEach(value => {
+      if (value.checked) {
+        ids.push(value.id);
+      }
+      value.checked = false;
+    });
+    ids = JSON.stringify(ids);
+    console.log(ids);
+    this._modalService.confirm({
+      title: `是否要删除${ids.length}个友链`,
+      content: '<b>删除后不可恢复</b>',
+      showConfirmLoading: true,
+      onOk: () => {
+        this.removeBlogrolls(ids);
+      }
+    });
+  }
+
+  /* 删除多条 */
+  removeBlogrolls(ids: string[]) {
+    this._blogrollService.removeBlogrolls(ids)
+      .subscribe(data => {
+        if (data.status === 204) {
+          this.refreshData();
+        } else {
+          this._message.create('error', data.message, { nzDuration: 3000 });
+        }
+      }, err => {
+        this._addBlogrollLoading = false;
+        this._message.create('error', '网络连接异常');
+      });
+  }
 }

@@ -28,7 +28,7 @@ export class LoginService {
    *  captcha: '10', // 验证码
    * }
    */
-  doLogin(loginInfo) {
+  doLogin(loginInfo): Observable<any> {
     const url = `${Config.apiRoot}login`;
     const body = JSON.stringify(loginInfo);
     return this.http.post(url, body);

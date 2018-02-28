@@ -72,7 +72,7 @@ export class LoginComponent implements OnInit {
   /* 登录操作 */
   doLogin() {
     this._loginService.doLogin(this.loginInfo)
-      .subscribe((data: any) => {
+      .subscribe(data => {
         if (data.status === 1) {
           const token = data.data.token;
           const username = data.data.username;

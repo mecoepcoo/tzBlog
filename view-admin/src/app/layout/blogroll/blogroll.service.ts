@@ -38,4 +38,19 @@ export class BlogrollService {
       order: order
     });
   }
+
+  /* 删除一条友链 */
+  removeBlogroll(id: string): Observable<any> {
+    const url = `${Config.apiRoot}blogrolls/${id}`;
+    return this.http.delete(url);
+  }
+
+  removeBlogrolls(ids: string[]): Observable<any> {
+    const url = `${Config.apiRoot}blogrolls`;
+    return this.http.request('delete', url, {
+      body: {
+        ids: ids
+      }
+    });
+  }
 }
