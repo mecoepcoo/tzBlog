@@ -1,15 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { CategoryService } from '../../share/category.service';
+import * as _ from 'lodash';
 
 export class Category {
-  id: String;
+  id?: String;
   name: String;
+  _editable?: boolean;
 }
 
 @Component({
   selector: 'app-category',
   templateUrl: './category.component.html',
-  styleUrls: ['./category.component.css']
+  styleUrls: [
+    '../../share/css/init.css',
+    './category.component.css'
+  ]
 })
 export class CategoryComponent implements OnInit {
   _allChecked = false;
@@ -23,6 +30,10 @@ export class CategoryComponent implements OnInit {
   _total = 1;
   _current = 1;
   _pageSize = 10;
+
+  _editNewData;
+  _addItemLoading = false;
+  addItemForm: FormGroup;
 
   _refreshStatus() {
     const allChecked = this._dataSet.every(value => value.checked === true);
@@ -44,20 +55,35 @@ export class CategoryComponent implements OnInit {
 
   _operateData() {
     this._operating = true;
-    setTimeout(_ => {
+    setTimeout(() => {
       this._dataSet.forEach(value => value.checked = false);
       this._refreshStatus();
       this._operating = false;
     }, 1000);
   }
 
+  refreshData(reset = false) {
+    if (reset) {
+      this._current = 1;
+    }
+    this._loading = true;
+    this.getCategory();
+  }
+
   constructor(
-    private _categoryService: CategoryService
+    private _categoryService: CategoryService,
+    private _message: NzMessageService,
+    private _modalService: NzModalService,
+    private fb: FormBuilder,
   ) {
   }
 
   ngOnInit() {
     this.getCategory();
+
+    this.addItemForm = this.fb.group({
+      name: [null, [Validators.required]],
+    });
   }
 
   getCategory() {
@@ -74,6 +100,40 @@ export class CategoryComponent implements OnInit {
         this._loading = false;
       }, error => {
         console.error(error);
+      });
+  }
+
+  _editData(id) {
+    _.forEach(this._dataSet, (data, index) => {
+      data._editable = false;
+    });
+    this._editNewData = _.cloneDeep(_.assign(_.find(this._dataSet, { id: id }), { _editable: true }));
+  }
+
+  _cancelEditData() {
+    _.forEach(this._dataSet, (data, index) => {
+      data._editable = false;
+    });
+    this._editNewData = {};
+  }
+
+  /* 新增 */
+  addCategory() {
+    this._addItemLoading = true;
+    const newItem = this.addItemForm.value;
+    this._categoryService.addCategory(newItem.name)
+      .subscribe(data => {
+        this._addItemLoading = false;
+        const blogroll = data.data;
+        if (data.status === 201) {
+          this.refreshData();
+          this._message.create('success', data.message);
+        } else {
+          this._message.create('error', data.message, { nzDuration: 3000 });
+        }
+      }, err => {
+        this._addItemLoading = false;
+        this._message.create('error', '网络连接异常');
       });
   }
 }

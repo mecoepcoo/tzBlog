@@ -6,7 +6,7 @@
           <label>名称</label>
         </div>
         <div nz-form-control nz-col [nzSpan]="6">
-          <nz-input formControlName="linkName" nzPlaceHolder="友链名称" [nzSize]="'large'"></nz-input>
+          <nz-input formControlName="linkName" nzPlaceHolder="友链名称" spellcheck="false" [nzSize]="'large'"></nz-input>
           <div nz-form-explain *ngIf="addBlogrollForm.controls.linkName.dirty&&addBlogrollForm.controls.linkName.hasError('required')">请输入友链名称</div>
         </div>
       </div>
@@ -15,7 +15,7 @@
           <label>链接</label>
         </div>
         <div nz-form-control nz-col [nzSpan]="6">
-          <nz-input formControlName="siteLink" nzPlaceHolder="友链链接" [nzSize]="'large'"></nz-input>
+          <nz-input formControlName="siteLink" nzPlaceHolder="友链链接" spellcheck="false" [nzSize]="'large'"></nz-input>
           <div nz-form-explain *ngIf="addBlogrollForm.controls.siteLink.dirty&&addBlogrollForm.controls.siteLink.hasError('required')">请输入友链链接</div>
           <div nz-form-explain *ngIf="addBlogrollForm.controls.siteLink.dirty&&addBlogrollForm.controls.siteLink.hasError('pattern')">url格式不正确</div>
         </div>
@@ -52,16 +52,16 @@
         <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
         </label>
       </th>
-      <th nz-th>
+      <th nz-th nzWidth="10%">
         <span>序号</span>
       </th>
-      <th nz-th>
+      <th nz-th nzWidth="15%">
         <span>名称</span>
       </th>
-      <th nz-th>
+      <th nz-th nzWidth="40%">
         <span>链接</span>
       </th>
-      <th nz-th>
+      <th nz-th nzWidth="10%">
         <span>排序</span>
       </th>
       <th nz-th>
@@ -78,11 +78,11 @@
       <td nz-td>{{i+1}}</td>
       <td nz-td>
         <span *ngIf="!data._editable">{{data.name}}</span>
-        <nz-input [(ngModel)]="_editNewData.name" nzPlaceHolder="链接名称" [nzSize]="'large'" *ngIf="data._editable"></nz-input>
+        <nz-input [(ngModel)]="_editNewData.name" nzPlaceHolder="链接名称" spellcheck="false" [nzSize]="'large'" *ngIf="data._editable"></nz-input>
       </td>
       <td nz-td>
         <a *ngIf="!data._editable" href="{{data.url}}" target="_blank">{{data.url}}</a>
-        <nz-input [(ngModel)]="_editNewData.url" nzPlaceHolder="链接地址" [nzSize]="'large'" *ngIf="data._editable"></nz-input>
+        <nz-input [(ngModel)]="_editNewData.url" nzPlaceHolder="链接地址" spellcheck="false" [nzSize]="'large'" *ngIf="data._editable"></nz-input>
       </td>
       <td nz-td>
         <span *ngIf="!data._editable">{{data.order}}</span>

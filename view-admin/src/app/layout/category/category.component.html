@@ -1,7 +1,24 @@
-<div style="margin-bottom: 16px;">
-  <button nz-button [disabled]="_disabledButton" [nzType]="'primary'" [nzLoading]="_operating" (click)="_operateData()">Operating</button>
-  <span style="margin-left: 8px;" *ngIf="_checkedNumber">Selected {{_checkedNumber}} items</span>
-</div>
+<nz-collapseset [nzBordered]="false" class="collapse-head">
+  <nz-collapse [nzTitle]="'新增分类'" nzActive="false">
+    <form nz-form [nzType]="'horizontal'" [formGroup]="addItemForm">
+      <div nz-form-item nz-row>
+        <div nz-form-label nz-col [nzSpan]="1">
+          <label>名称</label>
+        </div>
+        <div nz-form-control nz-col [nzSpan]="6">
+          <nz-input formControlName="name" nzPlaceHolder="分类名称" spellcheck="false" [nzSize]="'large'"></nz-input>
+          <div nz-form-explain *ngIf="addItemForm.controls.name.dirty&&addItemForm.controls.name.hasError('required')">请输入分类名称</div>
+        </div>
+      </div>
+      <div nz-form-item nz-row>
+        <div nz-form-control nz-col [nzSpan]="6">
+          <button nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="!addItemForm.valid" (click)="addCategory()" [nzLoading]="_addItemLoading">提交</button>
+        </div>
+      </div>
+    </form>
+  </nz-collapse>
+</nz-collapseset>
+
 <nz-table #nzTable [nzDataSource]="_dataSet" nzShowTotal [nzShowSizeChanger]="true" [nzShowQuickJumper]="true" [nzLoading]="_loading" [nzTotal]="_total" [(nzPageSize)]="_pageSize"
   [(nzPageIndex)]="_current" [nzPageSize]="_pageSize" (nzPageSizeChange)="_refreshStatus()"
   (nzPageIndexChange)="_refreshStatus()">
@@ -11,10 +28,10 @@
         <label nz-checkbox [(ngModel)]="_allChecked" [nzIndeterminate]="_indeterminate" (ngModelChange)="_checkAll($event)">
         </label>
       </th>
-      <th nz-th>
+      <th nz-th nzWidth="20%">
         <span>序号</span>
       </th>
-      <th nz-th>
+      <th nz-th nzWidth="50%">
         <span>名称</span>
       </th>
       <th nz-th>
@@ -29,8 +46,28 @@
         </label>
       </td>
       <td nz-td>{{i+1}}</td>
-      <td nz-td>{{data.name}}</td>
-      <td nz-td>操作</td>
+      <td nz-td>
+        <span *ngIf="!data._editable">{{data.name}}</span>
+        <nz-input [(ngModel)]="_editNewData.name" nzPlaceHolder="分类名称" spellcheck="false" [nzSize]="'large'" *ngIf="data._editable"></nz-input>
+      </td>
+      <td nz-td>
+        <button nz-button [nzType]="'primary'" *ngIf="!data._editable" (click)="_editData(data.id)">
+          <i class="anticon anticon-edit"></i>
+          <span>修改</span>
+        </button>
+        <button nz-button [nzType]="'primary'" *ngIf="data._editable" [nzLoading]="_editBlogrollLoading" (click)="saveEditData()">
+          <i class="anticon anticon-save"></i>
+          <span>保存</span>
+        </button>
+        <button nz-button [nzType]="'dashed'" *ngIf="data._editable" (click)="_cancelEditData()">
+          <i class="anticon anticon-close"></i>
+          <span>取消</span>
+        </button>
+        <button nz-button [nzType]="'danger'" (click)="removeBlogrollModal(data.id, data.name)">
+          <i class="anticon anticon-delete"></i>
+          <span>删除</span>
+        </button>
+      </td>
     </tr>
   </tbody>
 </nz-table>

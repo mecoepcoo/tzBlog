@@ -37,7 +37,6 @@ export class BlogrollComponent implements OnInit {
   _pageSize = 10;
 
   addBlogrollForm: FormGroup;
-  editBlogrollForm: FormGroup;
   _addBlogrollLoading = false;
   _editBlogrollLoading = false;
   _editNewData;

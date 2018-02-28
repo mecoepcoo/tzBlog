@@ -18,4 +18,12 @@ export class CategoryService {
     const url = `${Config.apiRoot}categories`;
     return this.http.get(url);
   }
+
+  /* 新增分类 */
+  addCategory(name: string): Observable<any> {
+    const url = `${Config.apiRoot}categories`;
+    return this.http.post(url, {
+      name: name
+    });
+  }
 }
