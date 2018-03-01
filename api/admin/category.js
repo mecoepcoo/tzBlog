@@ -159,7 +159,7 @@ router.route('/categories/:id')
       .then(data => {
         return re.r201(data, lang.UPDATE_OK, res);
       }, err => {
-        return re.r400(err, lang.ERROR, res);
+        return re.r400(err, lang.DUPLICATE, res);
       })
   })
 

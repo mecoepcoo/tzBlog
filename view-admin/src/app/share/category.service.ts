@@ -26,4 +26,18 @@ export class CategoryService {
       name: name
     });
   }
+
+  /* 修改分类 */
+  editCategory(id: string, name: string): Observable<any> {
+    const url = `${Config.apiRoot}categories/${id}`;
+    return this.http.put(url, {
+      name: name,
+    });
+  }
+
+  /* 删除分类 */
+  removeCategory(id: string): Observable<any> {
+    const url = `${Config.apiRoot}categories/${id}`;
+    return this.http.delete(url);
+  }
 }

@@ -40,11 +40,6 @@ export class BlogrollComponent implements OnInit {
   _addBlogrollLoading = false;
   _editBlogrollLoading = false;
   _editNewData;
-  _editNewDataValidator = {
-    name: false,
-    url: false,
-    order: false
-  };
 
   _refreshStatus() {
     const allChecked = this._dataSet.every(value => value.checked === true);
@@ -209,7 +204,6 @@ export class BlogrollComponent implements OnInit {
           this._message.create('error', data.message, { nzDuration: 3000 });
         }
       }, err => {
-        this._addBlogrollLoading = false;
         this._message.create('error', '网络连接异常');
       });
   }

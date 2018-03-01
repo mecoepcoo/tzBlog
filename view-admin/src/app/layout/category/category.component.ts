@@ -33,6 +33,7 @@ export class CategoryComponent implements OnInit {
 
   _editNewData;
   _addItemLoading = false;
+  _editItemLoading = false;
   addItemForm: FormGroup;
 
   _refreshStatus() {
@@ -124,7 +125,6 @@ export class CategoryComponent implements OnInit {
     this._categoryService.addCategory(newItem.name)
       .subscribe(data => {
         this._addItemLoading = false;
-        const blogroll = data.data;
         if (data.status === 201) {
           this.refreshData();
           this._message.create('success', data.message);
@@ -133,6 +133,53 @@ export class CategoryComponent implements OnInit {
         }
       }, err => {
         this._addItemLoading = false;
+        this._message.create('error', '网络连接异常');
+      });
+  }
+
+  /* 修改 */
+  saveEditData() {
+    // 校验name
+    if (this._editNewData.name.length === 0) {
+      return this._message.create('error', '请填写分类名称', { nzDuration: 3000 });
+    }
+    this._editItemLoading = true;
+    this._categoryService.editCategory(this._editNewData.id, this._editNewData.name)
+      .subscribe(data => {
+        this._editItemLoading = false;
+        if (data.status === 201) {
+          this.refreshData();
+          this._message.create('success', data.message);
+        } else {
+          this._message.create('error', data.message, { nzDuration: 3000 });
+        }
+      }, err => {
+        this._editItemLoading = false;
+        this._message.create('error', '网络连接异常');
+      });
+  }
+
+  removeItemModal(id: string, name: string) {
+    this._modalService.confirm({
+      title: `是否要删除分类“${name}”`,
+      content: '<b>删除后不可恢复</b>',
+      showConfirmLoading: true,
+      onOk: () => {
+        this.removeItem(id);
+      }
+    });
+  }
+
+  /* 删除单条 */
+  removeItem(id: string) {
+    this._categoryService.removeCategory(id)
+      .subscribe(data => {
+        if (data.status === 204) {
+          this.refreshData();
+        } else {
+          this._message.create('error', data.message, { nzDuration: 3000 });
+        }
+      }, err => {
         this._message.create('error', '网络连接异常');
       });
   }
