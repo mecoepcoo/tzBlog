@@ -7,7 +7,10 @@ import { LoginService } from '../share/login.service';
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
-  styleUrls: ['./layout.component.css'],
+  styleUrls: [
+    '../share/css/init.css',
+    './layout.component.css'
+  ],
   providers: [
     LoginService
   ]

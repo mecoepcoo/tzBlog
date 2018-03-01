@@ -24,4 +24,10 @@ export class PostService {
     };
     return this.http.get(url, options);
   }
+
+  /* 删除单篇 */
+  removePost(id: string): Observable<any> {
+    const url = `${Config.apiRoot}posts/${id}`;
+    return this.http.delete(url);
+  }
 }

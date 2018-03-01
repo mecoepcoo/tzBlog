@@ -18,4 +18,26 @@ export class TagService {
     const url = `${Config.apiRoot}tags`;
     return this.http.get(url);
   }
+
+  /* 新增标签 */
+  addTag(name: string): Observable<any> {
+    const url = `${Config.apiRoot}tags`;
+    return this.http.post(url, {
+      name: name
+    });
+  }
+
+  /* 修改标签 */
+  editTag(id: string, name: string): Observable<any> {
+    const url = `${Config.apiRoot}tags/${id}`;
+    return this.http.put(url, {
+      name: name,
+    });
+  }
+
+  /* 删除标签 */
+  removeTag(id: string): Observable<any> {
+    const url = `${Config.apiRoot}tags/${id}`;
+    return this.http.delete(url);
+  }
 }

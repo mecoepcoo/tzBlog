@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { PostService } from '../../share/post.service';
+import * as _ from 'lodash';
 
 export class Post {
-  id: String;
+  id?: String;
   title: String;
   author: String;
   _category: {
@@ -14,12 +16,16 @@ export class Post {
   date: Number;
   order: Number;
   _tags: any;
+  _editable?: boolean;
 }
 
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
-  styleUrls: ['./post.component.css']
+  styleUrls: [
+    '../../share/css/init.css',
+    './post.component.css'
+  ]
 })
 export class PostComponent implements OnInit {
   _allChecked = false;
@@ -57,15 +63,6 @@ export class PostComponent implements OnInit {
     this._refreshStatus();
   }
 
-  _operateData() {
-    this._operating = true;
-    setTimeout(_ => {
-      this._dataSet.forEach(value => value.checked = false);
-      this._refreshStatus();
-      this._operating = false;
-    }, 1000);
-  }
-
   refreshData(reset = false) {
     if (reset) {
       this._current = 1;
@@ -75,6 +72,8 @@ export class PostComponent implements OnInit {
   }
 
   constructor(
+    private _message: NzMessageService,
+    private _modalService: NzModalService,
     private _postService: PostService
   ) {
   }
@@ -116,6 +115,31 @@ export class PostComponent implements OnInit {
         this._loading = false;
       }, error => {
         console.error(error);
+      });
+  }
+
+  removeItemModal(id: string, title: string) {
+    this._modalService.confirm({
+      title: `是否要删除文章“${title}”`,
+      content: '<b>删除后不可恢复</b>',
+      showConfirmLoading: true,
+      onOk: () => {
+        this.removeItem(id);
+      }
+    });
+  }
+
+  /* 删除单条 */
+  removeItem(id: string) {
+    this._postService.removePost(id)
+      .subscribe(data => {
+        if (data.status === 204) {
+          this.refreshData();
+        } else {
+          this._message.create('error', data.message, { nzDuration: 3000 });
+        }
+      }, err => {
+        this._message.create('error', '网络连接异常');
       });
   }
 }
