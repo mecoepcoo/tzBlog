@@ -5,8 +5,8 @@ import { CategoryService } from '../../share/category.service';
 import * as _ from 'lodash';
 
 export class Category {
-  id?: String;
-  name: String;
+  id?: string;
+  name: string;
   _editable?: boolean;
 }
 

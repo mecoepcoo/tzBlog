@@ -23,3 +23,12 @@
 :host /deep/ .ant-menu-item:focus {
   outline: none;
 }
+:host /deep/ .input-error{
+  input {
+    border-color: #f04134;
+    &:focus {
+      box-shadow: 0 0 0 2px rgba(240, 54, 52, .2);
+      -webkit-box-shadow: 0 0 0 2px rgba(240, 54, 52, .2);
+    } 
+  }
+}

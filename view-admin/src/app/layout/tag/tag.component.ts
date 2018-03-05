@@ -6,8 +6,8 @@ import { TagService } from '../../share/tag.service';
 import * as _ from 'lodash';
 
 export class Tag {
-  id?: String;
-  name: String;
+  id?: string;
+  name: string;
   _editable?: boolean;
 }
 

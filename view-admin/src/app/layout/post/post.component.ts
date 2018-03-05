@@ -4,17 +4,17 @@ import { PostService } from '../../share/post.service';
 import * as _ from 'lodash';
 
 export class Post {
-  id?: String;
-  title: String;
-  author: String;
+  id?: string;
+  title: string;
+  author: string;
   _category: {
-    id: String;
-    category: String;
+    id: string;
+    category: string;
   };
-  content: String;
-  reading: Number;
-  date: Number;
-  order: Number;
+  content: string;
+  reading: number;
+  date: number;
+  order: number;
   _tags: any;
   _editable?: boolean;
 }

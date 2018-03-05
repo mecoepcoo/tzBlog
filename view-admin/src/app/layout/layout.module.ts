@@ -18,6 +18,9 @@ import { BlogrollComponent } from './blogroll/blogroll.component';
 import { CategoryService } from '../share/category.service';
 import { TagService } from '../share/tag.service';
 import { PostService } from '../share/post.service';
+import { EditpostComponent } from './editpost/editpost.component';
+
+import { EditorMdDirective } from './editor/editor-md.directive';
 
 @NgModule({
   imports: [
@@ -33,7 +36,9 @@ import { PostService } from '../share/post.service';
     TagComponent,
     SysinfoComponent,
     PostComponent,
-    BlogrollComponent
+    BlogrollComponent,
+    EditpostComponent,
+    EditorMdDirective,
   ],
   providers: [
     {

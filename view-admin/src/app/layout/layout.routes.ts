@@ -6,6 +6,7 @@ import { TagComponent } from './tag/tag.component';
 import { SysinfoComponent } from './sysinfo/sysinfo.component';
 import { PostComponent } from './post/post.component';
 import { BlogrollComponent } from './blogroll/blogroll.component';
+import { EditpostComponent } from './editpost/editpost.component';
 
 export const layoutRoutes: Routes = [
   {
@@ -45,6 +46,13 @@ export const layoutRoutes: Routes = [
         component: PostComponent,
         data: {
           breadcrumb: '文章管理'
+        }
+      },
+      {
+        path: 'editpost',
+        component: EditpostComponent,
+        data: {
+          breadcrumb: '新增文章'
         }
       },
       {
