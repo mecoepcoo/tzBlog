@@ -1,23 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { PostService } from '../../share/post.service';
+import { Post } from '../models/post.model';
 import * as _ from 'lodash';
-
-export class Post {
-  id?: string;
-  title: string;
-  author: string;
-  _category: {
-    id: string;
-    category: string;
-  };
-  content: string;
-  reading: number;
-  date: number;
-  order: number;
-  _tags: any;
-  _editable?: boolean;
-}
 
 @Component({
   selector: 'app-post',

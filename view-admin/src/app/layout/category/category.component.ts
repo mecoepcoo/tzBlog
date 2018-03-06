@@ -2,13 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { CategoryService } from '../../share/category.service';
+import { Category } from '../models/category.model';
 import * as _ from 'lodash';
-
-export class Category {
-  id?: string;
-  name: string;
-  _editable?: boolean;
-}
 
 @Component({
   selector: 'app-category',
