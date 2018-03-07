@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { NzMessageService, NzModalService } from 'ng-zorro-antd';
 import { EditorConfig } from '../editor/editor-md-config';
 import { Category } from '../models/category.model';
 import { Tag } from '../models/tag.model';
 import { CategoryService } from '../../share/category.service';
+import { PostService } from '../../share/post.service';
 import { TagService } from '../../share/tag.service';
 
 export class EditPost {
@@ -12,7 +14,7 @@ export class EditPost {
   _category: string;
   content: string;
   reading: number | string;
-  date: number | string;
+  date: number | string | Date;
   order: number | string;
   _tags: string;
 }
@@ -26,6 +28,7 @@ export class EditpostComponent implements OnInit {
   conf = new EditorConfig();
   markdown = '';
 
+  _submitLoading = false;
   categories: Category[] = [{
     id: '',
     name: '请选择分类'
@@ -37,7 +40,7 @@ export class EditpostComponent implements OnInit {
     author: '',
     content: '',
     reading: 0,
-    date: 0,
+    date: new Date().getTime(),
     order: 0,
     _tags: '',
     _category: ''
@@ -46,6 +49,9 @@ export class EditpostComponent implements OnInit {
   constructor(
     private _categoryService: CategoryService,
     private _tagService: TagService,
+    private _postService: PostService,
+    private _message: NzMessageService,
+    private _modalService: NzModalService,
   ) { }
 
   ngOnInit() {
@@ -69,6 +75,9 @@ export class EditpostComponent implements OnInit {
           };
           this.categories.push(categoryEle);
         });
+        if (!this.editPost._category) {
+          this.editPost._category = this.categories[0].id;
+        }
       }, error => {
         console.error(error);
       });
@@ -92,6 +101,38 @@ export class EditpostComponent implements OnInit {
 
   t(event) {
     console.log(event);
+  }
+
+  submitPost() {
+    if (this.editPost.id) {
+
+    } else {
+      this.addPost();
+    }
+  }
+
+  addPost() {
+    const newPost = {
+      title: this.editPost.title,
+      author: this.editPost.author,
+      categoryId: this.editPost._category,
+      tagIds: JSON.stringify(this.editPost._tags),
+      order: this.editPost.order,
+      date: new Date(<any>this.editPost.date).getTime(),
+      content: this.markdown
+    };
+    this._postService.addPost(newPost)
+      .subscribe(data => {
+        this._submitLoading = false;
+        if (data.status === 201) {
+          this._message.create('success', data.message);
+        } else {
+          this._message.create('error', data.message, { nzDuration: 3000 });
+        }
+      }, err => {
+        this._submitLoading = false;
+        this._message.create('error', '发布失败');
+      });
   }
 
 }

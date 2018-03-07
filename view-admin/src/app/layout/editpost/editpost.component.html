@@ -3,7 +3,7 @@
     <label>标题：</label>
   </div>
   <div nz-col [nzSpan]="11">
-    <nz-input [nzSize]="'large'" [(ngModel)]="editPost.title" [nzPlaceHolder]="'请输入标题'" (ngModelChange)="t(title)" required spellcheck="false" #title="ngModel" [ngClass]="{'input-error': title.dirty&&title.errors}"></nz-input>
+    <nz-input [nzSize]="'large'" [(ngModel)]="editPost.title" [nzPlaceHolder]="'请输入标题'" required spellcheck="false" #title="ngModel" [ngClass]="{'input-error': title.dirty&&title.errors}"></nz-input>
     <div class="form-item-invalid" *ngIf="title.dirty&&title.errors">请填写正确格式的标题，标题不能含有特殊字符</div>
   </div>
 </div>
@@ -28,7 +28,7 @@
         <label>分类：</label>
       </div>
       <div nz-col>
-        <nz-select style="width: 100%;" [(ngModel)]="editPost._category.id||categories[0].id" [nzPlaceHolder]="'请选择分类'">
+        <nz-select style="width: 100%;" [(ngModel)]="editPost._category" [nzPlaceHolder]="'请选择分类'">
           <nz-option *ngFor="let category of categories" [nzLabel]="category.name" [nzValue]="category.id"></nz-option>
         </nz-select>
       </div>
@@ -38,8 +38,7 @@
         <label>标签：</label>
       </div>
       <div nz-col>
-        <nz-select style="width: 100%;" nzTags [nzPlaceHolder]="'请选择标签'" [(ngModel)]="editPost._tags" [nzNotFoundContent]="'标签载入异常'"
-          nzShowSearch>
+        <nz-select style="width: 100%;" nzTags [nzPlaceHolder]="'至少选择一个标签'" [(ngModel)]="editPost._tags" [nzNotFoundContent]="'标签载入异常'" nzShowSearch required #tag="ngModel">
           <nz-option *ngFor="let tag of tags" [nzLabel]="tag.name" [nzValue]="tag.id">
           </nz-option>
         </nz-select>
@@ -54,6 +53,18 @@
         <div class="form-item-invalid" *ngIf="order.dirty&&order.errors">请正确填写排序</div>
       </div>
     </div>
-
+    <div nz-row class="form-item">
+      <div nz-col class="form-item-label label-left" [nzSpan]="24">
+        <label>时间：</label>
+      </div>
+      <div nz-col [nzSpan]="24">
+        <nz-datepicker style="width: 100%;" [(ngModel)]="editPost.date" [nzPlaceHolder]="'Select date'" [nzFormat]="'YYYY-MM-DD'"></nz-datepicker>
+      </div>
+    </div>
+    <div nz-row class="form-item">
+      <button nz-button style="width: 100%;margin-top: 10px;" [nzType]="'primary'" [disabled]="title.errors||author.errors||order.errors||tag.errors" (click)="addPost()" [nzLoading]="_submitLoading">
+        <span>提交</span>
+      </button>
+    </div>
   </div>
 </div>

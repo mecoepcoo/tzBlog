@@ -4,7 +4,10 @@ const router = express.Router();
 const _ = require('lodash');
 const re = require('../../lib/response');
 const lang = require('../../config/lang');
+const db = require('../../models/db');
+const mongoose = db.mongoose;
 const PostModel = require('../../models/post');
+const TagModel = require('../../models/tag');
 
 /**
  * @apiDefine Post 文章
@@ -190,39 +193,51 @@ router.route('/posts')
       return re.r400(e, e.message, res);
     }
 
-    const postData = {
-      title: title,
-      author: author,
-      _category: categoryId,
-      _tags: JSON.parse(tagIds),
-      content: content
-    };
-
-    if (order && !_.isNaN(order)) {
-      _.assign(postData, { order: order });
-    }
-
-    if (date && !_.isNaN(date)) {
-      _.assign(postData, { date: date });
-    }
-
+    const oldTag = [];
+    const newTag = [];
+    _.forEach(JSON.parse(tagIds), tag => {
+      let isTagId = mongoose.Types.ObjectId.isValid(tag);
+      if (isTagId) {
+        oldTag.push(tag);
+      } else {
+        newTag.push({
+          name: tag
+        });
+      }
+    });
+    
     const postSaved = {};
-    const post = new PostModel.Post(postData);
-    post.save()
-      .then(data => {
-        postSaved.data = data;
-        return {
-          tagId: JSON.parse(tagIds),
-          postId: data._id
+    const newTagDate = TagModel.Tag.create(newTag)
+      .then(newTags => {
+        _.forEach(newTags, newTag => {
+          oldTag.push(newTag._id);
+        })
+      })
+      .then(() => {
+        const postData = {
+          title: title,
+          author: author,
+          _category: categoryId,
+          _tags: oldTag,
+          content: content
         };
-      }, err => {
-        return re.r400(err, lang.ERROR, res);
-      })
-      .then(data => {
-        return re.r201(postSaved.data, lang.CREATE_OK, res);
-      }, err => {
-        return re.r400(err, lang.ERROR, res);
-      })
+
+        if (order && !_.isNaN(order)) {
+          _.assign(postData, { order: order });
+        }
+
+        if (date && !_.isNaN(date)) {
+          _.assign(postData, { date: date });
+        }
+
+        return new PostModel.Post(postData).save();
+    })
+    .then(data => {
+      postSaved.data = data;
+      return re.r201(postSaved.data, lang.CREATE_OK, res);
+    }, err => {
+      return re.r400(err, lang.ERROR, res);
+    })
   });
 
 router.route('/posts/:id')
