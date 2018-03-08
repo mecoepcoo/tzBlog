@@ -56,6 +56,13 @@ export const layoutRoutes: Routes = [
         }
       },
       {
+        path: 'editpost/:id',
+        component: EditpostComponent,
+        data: {
+          breadcrumb: '修改文章'
+        }
+      },
+      {
         path: 'blogroll',
         component: BlogrollComponent,
         data: {

@@ -70,7 +70,6 @@ export class PostComponent implements OnInit {
   getPosts(page, size) {
     this._postService.getPosts(page, size)
       .subscribe(posts => {
-        console.log(posts);
         this._total = posts.total;
         this._dataSet = [];
         posts.data.forEach((post, index) => {

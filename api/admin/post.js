@@ -385,27 +385,40 @@ router.route('/posts/:id')
       return re.r400(e, e.message, res);
     }
 
-    const postData = {
-      title: title,
-      author: author,
-      _category: categoryId,
-      _tags: JSON.parse(tagIds),
-      content: content
-    }
+    const oldTag = [];
+    const newTag = [];
+    _.forEach(JSON.parse(tagIds), tag => {
+      let isTagId = mongoose.Types.ObjectId.isValid(tag);
+      if (isTagId) {
+        oldTag.push(tag);
+      } else {
+        newTag.push({
+          name: tag
+        });
+      }
+    });
 
-    if (order && !_.isNaN(order)) {
-      _.assign(postData, { order: order });
-    }
+    const postSaved = {};
+    const newTagDate = TagModel.Tag.create(newTag)
+      .then(newTags => {
+        _.forEach(newTags, newTag => {
+          oldTag.push(newTag._id);
+        })
+      })
+      .then(() => {
+        return PostModel.Post.findOne().where({ '_id': id });
+      })
+      .then(post => {
+        if (post) {
+          post.title = title;
+          post.author = author;
+          post._category = categoryId;
+          post._tags = oldTag;
+          post.order = order;
+          post.date = date;
+          post.content = content;
 
-    if (date && !_.isNaN(date)) {
-      _.assign(postData, { date: date });
-    }
-
-    const postQuery = PostModel.Post.findOne().where({ '_id': id }).exec()
-      .then(category => {
-        if (category) {
-          category.name = name;
-          return category.save();
+          return post.save();
         } else {
           return re.r404({}, lang.NOT_FOUND, res);
         }

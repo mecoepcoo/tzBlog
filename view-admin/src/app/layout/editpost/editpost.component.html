@@ -10,7 +10,7 @@
 <div nz-row [nzGutter]="16">
   <div nz-col [nzSpan]="20">
     <div id="md" appEditorMd [editormdConfig]="conf" (editorChange)="syncModel($event)">
-      <textarea style="display: block;" [(ngModel)]="markdown"></textarea>
+      <textarea style="display: block;" [(ngModel)]="editPost.content"></textarea>
     </div>
   </div>
   <div nz-col [nzSpan]="4">
@@ -62,7 +62,7 @@
       </div>
     </div>
     <div nz-row class="form-item">
-      <button nz-button style="width: 100%;margin-top: 10px;" [nzType]="'primary'" [disabled]="title.errors||author.errors||order.errors||tag.errors" (click)="addPost()" [nzLoading]="_submitLoading">
+      <button nz-button style="width: 100%;margin-top: 10px;" [nzType]="'primary'" [disabled]="title.errors||author.errors||order.errors||tag.errors" (click)="submitPost()" [nzLoading]="_submitLoading">
         <span>提交</span>
       </button>
     </div>

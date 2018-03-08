@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NzMessageService, NzModalService } from 'ng-zorro-antd';
+import { Router, ActivatedRoute } from '@angular/router';
 import { EditorConfig } from '../editor/editor-md-config';
 import { Category } from '../models/category.model';
 import { Tag } from '../models/tag.model';
@@ -26,7 +27,6 @@ export class EditPost {
 })
 export class EditpostComponent implements OnInit {
   conf = new EditorConfig();
-  markdown = '';
 
   _submitLoading = false;
   categories: Category[] = [{
@@ -52,16 +52,24 @@ export class EditpostComponent implements OnInit {
     private _postService: PostService,
     private _message: NzMessageService,
     private _modalService: NzModalService,
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit() {
     this.getAllCategories();
     this.getAllTags();
+    this.activatedRoute.params.
+      subscribe(param => {
+        if (param.id) {
+          this.getPost(param.id);
+        }
+      });
   }
 
   // 同步编辑器内容
   syncModel(str): void {
-    this.markdown = str;
+    this.editPost.content = str;
   }
 
   getAllCategories() {
@@ -99,16 +107,28 @@ export class EditpostComponent implements OnInit {
       });
   }
 
-  t(event) {
-    console.log(event);
-  }
-
   submitPost() {
     if (this.editPost.id) {
-
+      this.updatePost();
     } else {
       this.addPost();
     }
+  }
+
+  getPost(id) {
+    this._postService.getPost(id)
+      .subscribe(data => {
+        const post = data.data;
+        this.editPost.id = post._id;
+        this.editPost.title = post.title;
+        this.editPost.author = post.author;
+        this.editPost.content = post.content;
+        this.editPost.reading = post.reading;
+        this.editPost.date = post.date;
+        this.editPost.order = post.order;
+        this.editPost._tags = post._tags;
+        this.editPost._category = post._category;
+      });
   }
 
   addPost() {
@@ -119,13 +139,40 @@ export class EditpostComponent implements OnInit {
       tagIds: JSON.stringify(this.editPost._tags),
       order: this.editPost.order,
       date: new Date(<any>this.editPost.date).getTime(),
-      content: this.markdown
+      content: this.editPost.content
     };
     this._postService.addPost(newPost)
       .subscribe(data => {
         this._submitLoading = false;
         if (data.status === 201) {
           this._message.create('success', data.message);
+          this.router.navigateByUrl('admin/post');
+        } else {
+          this._message.create('error', data.message, { nzDuration: 3000 });
+        }
+      }, err => {
+        this._submitLoading = false;
+        this._message.create('error', '发布失败');
+      });
+  }
+
+  updatePost() {
+    const id = this.editPost.id;
+    const newPost = {
+      title: this.editPost.title,
+      author: this.editPost.author,
+      categoryId: this.editPost._category,
+      tagIds: JSON.stringify(this.editPost._tags),
+      order: this.editPost.order,
+      date: new Date(<any>this.editPost.date).getTime(),
+      content: this.editPost.content
+    };
+    this._postService.editPost(id, newPost)
+      .subscribe(data => {
+        this._submitLoading = false;
+        if (data.status === 201) {
+          this._message.create('success', data.message);
+          this.router.navigateByUrl(`admin/post`);
         } else {
           this._message.create('error', data.message, { nzDuration: 3000 });
         }

@@ -25,9 +25,20 @@ export class PostService {
     return this.http.get(url, options);
   }
 
+  /* 获取指定单篇文章 */
+  getPost(id): Observable<any> {
+    const url = `${Config.apiRoot}posts/${id}`;
+    return this.http.get(url);
+  }
+
   addPost(post): Observable<any> {
     const url = `${Config.apiRoot}posts`;
     return this.http.post(url, post);
+  }
+
+  editPost(id, post): Observable<any> {
+    const url = `${Config.apiRoot}posts/${id}`;
+    return this.http.put(url, post);
   }
 
   /* 删除单篇 */

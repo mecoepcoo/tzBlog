@@ -56,7 +56,7 @@
       <td nz-td>{{data.order}}</td>
       <td nz-td>{{data.date | dateFormat: 0}}</td>
       <td nz-td>
-        <button nz-button [nzType]="'primary'">
+        <button nz-button [nzType]="'primary'" routerLink="/admin/editpost/{{data.id}}">
           <i class="anticon anticon-edit"></i>
           <span>编辑</span>
         </button>
