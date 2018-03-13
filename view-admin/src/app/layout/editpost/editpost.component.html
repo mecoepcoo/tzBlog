@@ -58,7 +58,8 @@
         <label>时间：</label>
       </div>
       <div nz-col [nzSpan]="24">
-        <nz-datepicker style="width: 100%;" [(ngModel)]="editPost.date" [nzPlaceHolder]="'Select date'" [nzFormat]="'YYYY-MM-DD'"></nz-datepicker>
+<nz-datepicker style="width: 100%;" [(ngModel)]="editPost.date" [nzPlaceHolder]="'Select date'" [nzFormat]="'YYYY-MM-DD'" nzAllowClear="false"></nz-datepicker>
+
       </div>
     </div>
     <div nz-row class="form-item">

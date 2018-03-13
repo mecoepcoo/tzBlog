@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute, NavigationEnd, Params, PRIMARY_OUTLET } from '@angular/router';
 import { Observable } from 'rxjs/Rx';
 
@@ -13,7 +13,7 @@ interface IBreadcrumb {
   templateUrl: './bread-crumb.component.html',
   styleUrls: ['./bread-crumb.component.css']
 })
-export class BreadCrumbComponent implements OnInit {
+export class BreadCrumbComponent implements OnInit, AfterViewInit {
   public breadcrumbs: IBreadcrumb[];
 
   constructor(
@@ -21,10 +21,10 @@ export class BreadCrumbComponent implements OnInit {
     private router: Router
   ) {
     this.breadcrumbs = [
-      {
-        url: '/home',
-        label: '主页'
-      }
+      // {
+      //   url: '/home',
+      //   label: '主页'
+      // }
     ];
   }
 
@@ -36,7 +36,21 @@ export class BreadCrumbComponent implements OnInit {
       // set breadcrumbs
       const root: ActivatedRoute = this.activatedRoute.root;
       this.breadcrumbs = this.getBreadcrumbs(root);
+      // 防止主页出现两次
+      if (this.breadcrumbs.length > 1) {
+        this.breadcrumbs.shift();
+      }
+      sessionStorage.setItem('breadcrumbList', JSON.stringify(this.breadcrumbs));
     });
+  }
+
+  ngAfterViewInit() {
+    // 刷新页面时保存导航
+    const breadcrumbList = sessionStorage.getItem('breadcrumbList');
+
+    if (this.breadcrumbs.length === 0) {
+      this.breadcrumbs = JSON.parse(breadcrumbList);
+    }
   }
 
   private getBreadcrumbs(route: ActivatedRoute, url: string = '', breadcrumbs: IBreadcrumb[] = []): IBreadcrumb[] {
