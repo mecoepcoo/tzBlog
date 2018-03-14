@@ -1,1 +1,0 @@
-var tt = 'test ok';

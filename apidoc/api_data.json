@@ -1039,12 +1039,63 @@
     "groupTitle": "分类"
   },
   {
+    "type": "post",
+    "url": "/login",
+    "title": "登录",
+    "name": "doLogin",
+    "description": "<p>登录操作</p>",
+    "group": "Other",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "username",
+            "description": "<p>用户名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "password",
+            "description": "<p>密码(明文)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "captcha",
+            "description": "<p>验证码</p>"
+          }
+        ]
+      }
+    },
+    "filename": "api/admin/login.js",
+    "groupTitle": "其他",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>文本信息</p>"
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "get",
     "url": "/captcha",
     "title": "获取验证码",
     "name": "getCaptcha",
     "description": "<p>获取验证码接口，客户端需要支持cookie</p>",
-    "group": "GroupUser",
+    "group": "Other",
     "version": "1.0.0",
     "success": {
       "fields": {
@@ -1074,7 +1125,7 @@
       ]
     },
     "filename": "api/admin/login.js",
-    "groupTitle": "GroupUser"
+    "groupTitle": "其他"
   },
   {
     "type": "get",
@@ -1082,7 +1133,7 @@
     "title": "退出登录",
     "name": "logout",
     "description": "<p>退出登录接口，请求成功后清空登录session和cookie信息</p>",
-    "group": "GroupUser",
+    "group": "Other",
     "version": "1.0.0",
     "success": {
       "examples": [
@@ -1105,7 +1156,7 @@
       }
     },
     "filename": "api/admin/login.js",
-    "groupTitle": "GroupUser"
+    "groupTitle": "其他"
   },
   {
     "type": "get",

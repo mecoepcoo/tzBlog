@@ -48,6 +48,10 @@
     "TagHome",
     "getTagsHome",
     "BlogrollHome",
-    "getBlogrollsHome"
+    "getBlogrollsHome",
+    "Other",
+    "doLogin",
+    "getCaptcha",
+    "logout"
   ]
 }

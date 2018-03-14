@@ -48,14 +48,18 @@ define({
     "TagHome",
     "getTagsHome",
     "BlogrollHome",
-    "getBlogrollsHome"
+    "getBlogrollsHome",
+    "Other",
+    "doLogin",
+    "getCaptcha",
+    "logout"
   ],
   "sampleUrl": false,
   "defaultVersion": "0.0.0",
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2018-02-25T13:59:11.899Z",
+    "time": "2018-03-14T15:20:25.752Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }

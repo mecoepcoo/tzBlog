@@ -9,7 +9,28 @@ const lang = require('../../config/lang');
 const getCaptcha = require('../../lib/captcha').getCaptcha;
 const AdminUserModel = require('../../models/admin-user');
 
+/**
+ * @apiDefine Other 其他
+ */
+
+/**
+ * @apiDefine STATUS
+ * @apiSuccess {string} message 文本信息
+ */
+
 router.route('/login')
+  /**
+   * @api {post} /login 登录
+   * @apiName doLogin
+   * @apiDescription 登录操作
+   * @apiGroup Other
+   * @apiVersion 1.0.0
+   * 
+   * @apiParam {string} username 用户名
+   * @apiParam {string} password 密码(明文)
+   * @apiParam {string} captcha 验证码
+   * @apiUse STATUS
+   */
   .post( (req, res) => {
     let username = req.body.username || '';
     let password = req.body.password || '';
@@ -74,7 +95,7 @@ router.route('/captcha')
    * @api {get} /captcha 获取验证码
    * @apiName getCaptcha
    * @apiDescription 获取验证码接口，客户端需要支持cookie
-   * @apiGroup GroupUser
+   * @apiGroup Other
    * @apiVersion 1.0.0
    * 
    * @apiUse STATUS
@@ -104,7 +125,7 @@ router.route('/logout')
    * @api {get} /user/logout 退出登录
    * @apiName logout
    * @apiDescription 退出登录接口，请求成功后清空登录session和cookie信息
-   * @apiGroup GroupUser
+   * @apiGroup Other
    * @apiVersion 1.0.0
    * 
    * @apiUse STATUS
