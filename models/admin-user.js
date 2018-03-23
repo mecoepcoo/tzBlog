@@ -17,6 +17,11 @@ const adminUserSchema = new mongoose.Schema(
       type: String,
       required: true
     },
+    _group: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'AdminGroup',
+      required: true
+    },
     createDate: {
       type: Number
     },

@@ -65,6 +65,7 @@ app.use(session({
 // api
 app.use('/api/admin', require('./api/admin/login'));
 app.use('/api/admin', require('./api/admin/admin-user'));
+app.use('/api/admin', require('./api/admin/admin-group'));
 app.use('/api/admin', require('./api/admin/blogroll'));
 app.use('/api/admin', require('./api/admin/category'));
 app.use('/api/admin', require('./api/admin/tag'));

@@ -1,10 +1,10 @@
-/* 管理员接口 */
+/* 管理组接口 */
 const express = require('express');
 const router = express.Router();
 const _ = require('lodash');
-const hash = require('../../lib/hash');
 const re = require('../../lib/response');
 const lang = require('../../config/lang');
+const AdminGroupModel = require('../../models/admin-group');
 const AdminUserModel = require('../../models/admin-user');
 
 /**
@@ -15,7 +15,7 @@ const AdminUserModel = require('../../models/admin-user');
  * @apiDefine STATUS
  * @apiSuccess {string} message 文本信息
  */
-router.route('/adminusers')
+router.route('/admingroups')
   /**
    * @api {get} /adminusers 获取管理员列表
    * @apiName getAdmins
@@ -55,36 +55,12 @@ router.route('/adminusers')
    *     }
    */
   .get( (req, res) => {
-    const page = +req.query.page || 1;
-    const pageSize = +req.query.pagesize || 10;
-    const result = {};
-    // 取管理员列表
-    const adminUserQuery = AdminUserModel.AdminUser.find({}, '_id name createDate isBan')
-      .skip((page - 1) * pageSize)
-      .limit(pageSize)
-      .sort({_id: -1})
-      .populate([
-        {
-          path: '_group',
-        },
-      ])
-      .then(users => {
-        result.users = users;
+    // 取管理组列表
+    AdminGroupModel.AdminGroup.getAdminGroups()
+      .then(data => {
+        return re.r200(data, lang.OK, -1, res);
       }, err => {
         return re.r404(err, lang.NOT_FOUND, res);
-      });
-    // 取文档总数
-    const adminUserCountQuery = AdminUserModel.AdminUser.count()
-      .exec()
-      .then(count => {
-        result.total = count;
-      }, err => {
-        return re.r404(err, lang.NOT_FOUND, res);
-      });
-
-    Promise.all([adminUserQuery, adminUserCountQuery])
-      .then(() => {
-        return re.r200(result.users, lang.OK, result.total, res);
       })
   })
 
@@ -97,7 +73,6 @@ router.route('/adminusers')
    * 
    * @apiParam {string} adminName 管理员用户名
    * @apiParam {string} password 密码 
-   * @apiParam {string} group 管理组id
    * @apiUse STATUS
    * @apiSuccess {json} data 
    * @apiSuccess {string} data.name 管理员名
@@ -118,94 +93,35 @@ router.route('/adminusers')
    *      }
    */
   .post( (req, res) => {
-    const adminName = req.body.adminName || '';
-    const group = req.body.group || '';
-    let password = req.body.password || '';
+    const groupName = req.body.groupname || '';
+    const auth = req.body.auth || '';
 
     // 参数校验
     try {
-      if (!adminName.length) {
-        throw new Error('用户名未填写');
+      if (!groupName.length) {
+        throw new Error('管理组名称未填写');
       }
-      if (!password.length) {
-        throw new Error('密码未填写');
-      }
-      if (!group.length) {
-        throw new Error('管理组id未填写');
+      if (!JSON.parse(auth)) {
+        throw new Error('权限格式不正确');
       }
     } catch (e) {
       return re.r400(e, e.message, res);
     }
 
-    const salt = hash.setSalt(32);
-    password = hash.buildPwd(password, salt);
-    const newAdminUser = new AdminUserModel.AdminUser({
-      name: adminName,
-      password: password,
-      salt: salt,
-      _group: group,
-      createDate: new Date().getTime(),
-      lastLogin: 0,
-      isBan: false
+    const newAdminGroup = new AdminGroupModel.AdminGroup({
+      name: groupName,
+      _auth: JSON.parse(auth)
     });
 
-    newAdminUser.save()
+    newAdminGroup.save()
       .then(data => {
-        data = JSON.parse(JSON.stringify(data));
-        data = _.omit(data, ['password', 'salt', 'lastLogin']);
         return re.r201(data, lang.CREATE_OK, res);
       }, err => {
         return re.r400(err, lang.DUPLICATE, res);
       })
-  })
+  });
 
-  /**
-   * @api {delete} /adminusers 批量删除管理员
-   * @apiName deleteAdmins
-   * @apiDescription 批量删除管理员
-   * @apiGroup AdminUser
-   * @apiVersion 1.0.0
-   * 
-   * @apiParam {array} ids 管理员id数组
-   * @apiUse STATUS
-   * @apiSuccess {json} data 
-   * @apiSuccessExample {json} Success - Example:
-   *     HTTP / 1.1 200 OK
-   *     {
-   *         "status": 204,
-   *         "message": "删除成功",
-   *         "data": []
-   *     }
-   */
-  .delete( (req, res) => {
-    let ids = req.body.ids;
-    // 参数校验
-    try {
-      if (!_.isArrayLike(ids)) {
-        throw new Error('参数必须是数组类型');
-      } else {
-        ids = JSON.parse(ids);
-      }
-    } catch (e) {
-      return re.r400(e, e.message, res);
-    }
-    
-    const adminUserQuery = AdminUserModel.AdminUser.find().where({
-      '_id': {
-        '$in': ids
-      }
-    }).remove();
-    adminUserQuery.then(data => {
-      return re.r204([], lang.NO_CONTENT, res);
-    }, err => {
-      return re.r400(err, lang.ERROR, res);
-    })
-  })
-
-
-  
-
-router.route('/adminusers/:id')
+router.route('/admingroups/:id')
   /**
    * @api {put} /adminusers/:id 修改指定管理员
    * @apiName updateAdmin
@@ -238,52 +154,37 @@ router.route('/adminusers/:id')
   .put( (req, res) => {
     let id = req.params.id || req.body.id || '';
     id = id.replace(/\$/g, '');
-    const adminName = req.body.adminName || '';
-    const group = req.body.group || '';
-    const isBan = req.body.isBan;
-    let password = req.body.password || '';
+    const groupName = req.body.groupname || '';
+    const auth = req.body.auth || '';
+
     // 参数校验
     try {
       if (!id.length) {
         throw new Error('缺少参数id');
       }
-      if (!adminName.length) {
-        throw new Error('请填写用户名');
+      if (!groupName.length) {
+        throw new Error('管理组名称未填写');
       }
-      if (!password.length) {
-        throw new Error('请填写密码');
-      }
-      if (!group.length) {
-        throw new Error('请填写管理组id');
-      }
-      if (isBan === undefined) {
-        throw new Error('请选择禁用状态');
+      if (!JSON.parse(auth)) {
+        throw new Error('权限格式不正确');
       }
     } catch (e) {
       return re.r400(e, e.message, res);
     }
 
-    const salt = hash.setSalt(32);
-    password = hash.buildPwd(password, salt);
-
-    const adminUsersQuery = AdminUserModel.AdminUser.findOne().where({'_id': id}).exec()
-    .then(adminUser => {
-      adminUser.name = adminName;
-      adminUser.password = password;
-      adminUser.salt = salt;
-      adminUser._group = group;
-      adminUser.isBan = isBan;
-      return adminUser.save();
-    }, err => {
-      return re.r400(err, lang.ERROR, res);
-    })
-    .then(data => {
-      data = JSON.parse(JSON.stringify(data));
-      data = _.omit(data, ['password', 'salt', 'lastLogin']);
-      return re.r201(data, lang.UPDATE_OK, res);
-    }, err => {
-      return re.r400(err, lang.DUPLICATE, res);
-    })
+    const adminGroupQuery = AdminGroupModel.AdminGroup.findOne().where({'_id': id})
+      .then(adminGroup => {
+        adminGroup.name = groupName;
+        adminGroup._auth = JSON.parse(auth);
+        return adminGroup.save();
+      }, err => {
+        return re.r400(err, lang.ERROR, res);
+      })
+      .then(data => {
+        return re.r201(data, lang.UPDATE_OK, res);
+      }, err => {
+        return re.r400(err, lang.DUPLICATE, res);
+      })
   })
   
   /**
@@ -314,12 +215,19 @@ router.route('/adminusers/:id')
     } catch (e) {
       return re.r400(e, e.message, res);
     }
-    const adminUsersQuery = AdminUserModel.AdminUser.findOne().where({'_id': id}).remove()
-    .then(data => {
-      return re.r204([], lang.NO_CONTENT, res);
-    }, err => {
-      return re.r400(err, lang.ERROR, res);
-    })
+    const adminUserQuery = AdminUserModel.AdminUser.findOne().where({_group: id}).populate('_group')
+      .then(data => {
+        if (data) {
+          return re.r400(data, '此管理组下有管理员，无法删除该组', res);
+        } else {
+          AdminGroupModel.AdminGroup.findOne().where({ '_id': id }).remove()
+            .then(data => {
+              return re.r204([], lang.NO_CONTENT, res);
+            }, err => {
+              return re.r400(err, lang.ERROR, res);
+            })
+        }
+      })
   });
   
 module.exports = router;

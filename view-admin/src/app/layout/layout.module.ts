@@ -21,6 +21,7 @@ import { PostService } from '../share/post.service';
 import { EditpostComponent } from './editpost/editpost.component';
 
 import { EditorMdDirective } from './editor/editor-md.directive';
+import { AdminGroupComponent } from './admin-group/admin-group.component';
 
 @NgModule({
   imports: [
@@ -39,6 +40,7 @@ import { EditorMdDirective } from './editor/editor-md.directive';
     BlogrollComponent,
     EditpostComponent,
     EditorMdDirective,
+    AdminGroupComponent,
   ],
   providers: [
     {

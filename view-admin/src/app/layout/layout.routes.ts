@@ -7,6 +7,7 @@ import { SysinfoComponent } from './sysinfo/sysinfo.component';
 import { PostComponent } from './post/post.component';
 import { BlogrollComponent } from './blogroll/blogroll.component';
 import { EditpostComponent } from './editpost/editpost.component';
+import { AdminGroupComponent } from './admin-group/admin-group.component';
 
 export const layoutRoutes: Routes = [
   {
@@ -18,6 +19,13 @@ export const layoutRoutes: Routes = [
         component: AdminListComponent,
         data: {
           breadcrumb: '管理员'
+        }
+      },
+      {
+        path: 'admingroup',
+        component: AdminGroupComponent,
+        data: {
+          breadcrumb: '管理组'
         }
       },
       {

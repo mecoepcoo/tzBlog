@@ -73,7 +73,7 @@ postSchema.static('findByCategory', function (categoryId, page = 1, pageSize = 1
 })
 
 /**
- * 根据分类id筛选文章
+ * 根据标签id筛选文章
  */
 postSchema.static('findByTag', function (tagId, page = 1, pageSize = 10) {
   const postQuery = this.find()

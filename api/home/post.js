@@ -7,7 +7,7 @@ const lang = require('../../config/lang');
 const PostModel = require('../../models/post');
 
 /**
- * @apiDefine PostHome 文章
+ * @apiDefine PostHome 文章（客户端）
  */
 
 /**
