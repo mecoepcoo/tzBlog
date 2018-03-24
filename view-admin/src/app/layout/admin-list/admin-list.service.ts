@@ -24,4 +24,30 @@ export class AdminListService {
     };
     return this.http.get(url, options);
   }
+
+  /* 新增 */
+  addAdminUser(name: string, password: string, group: string): Observable<any> {
+    const url = `${Config.apiRoot}adminusers`;
+    return this.http.post(url, {
+      adminName: name,
+      password: password,
+      group: group
+    });
+  }
+
+  /* 修改 */
+  editAdminUser(id: string, name: string, password: string, group: string): Observable<any> {
+    const url = `${Config.apiRoot}adminusers/${id}`;
+    return this.http.put(url, {
+      name: name,
+      password: password,
+      group: group
+    });
+  }
+
+  /* 删除 */
+  removeAdminUser(id: string): Observable<any> {
+    const url = `${Config.apiRoot}adminusers/${id}`;
+    return this.http.delete(url);
+  }
 }

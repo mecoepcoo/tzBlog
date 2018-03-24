@@ -6,6 +6,7 @@ const re = require('../../lib/response');
 const lang = require('../../config/lang');
 const AdminGroupModel = require('../../models/admin-group');
 const AdminUserModel = require('../../models/admin-user');
+const AdminAuthModel = require('../../models/admin-auth');
 
 /**
  * @apiDefine AdminUser 管理员
@@ -227,6 +228,16 @@ router.route('/admingroups/:id')
               return re.r400(err, lang.ERROR, res);
             })
         }
+      })
+  });
+
+router.route('/adminauth')
+  .get( (req, res) => {
+    AdminAuthModel.AdminAuth.getAdminAuth()
+      .then(data => {
+        return re.r200(data, lang.OK, -1, res);
+      }, err => {
+        return re.r404(err, lang.NOT_FOUND, res);
       })
   });
   

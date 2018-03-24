@@ -29,6 +29,10 @@ adminAuthSchema.static('initAdminAuth', function () {
     });
 })
 
+adminAuthSchema.static('getAdminAuth', function () {
+  return this.find();
+})
+
 AdminAuth = mongoose.model('AdminAuth', adminAuthSchema, 'b_admin_auth');
 
 AdminAuth.initAdminAuth()

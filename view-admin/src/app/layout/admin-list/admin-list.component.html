@@ -1,7 +1,32 @@
-<div style="margin-bottom: 16px;">
-  <button nz-button [disabled]="_disabledButton" [nzType]="'primary'" [nzLoading]="_operating" (click)="_operateData()">Operating</button>
-  <span style="margin-left: 8px;" *ngIf="_checkedNumber">Selected {{_checkedNumber}} items</span>
-</div>
+<nz-collapseset [nzBordered]="false" class="collapse-head">
+  <nz-collapse [nzTitle]="'新增管理员'" nzActive="false">
+    <div nz-row>
+      <div nz-col [nzSpan]="6">
+        <nz-input nzPlaceHolder="请填写管理员名称" spellcheck="false" [nzSize]="'large'" required #adminName="ngModel" [(ngModel)]="_addNewData.name"></nz-input>
+        <div class="form-item-invalid" *ngIf="adminName.dirty&&adminName.errors">请填写管理员名称</div>
+      </div>
+    </div>
+    <div nz-row style="margin: 16px 0;">
+      <div nz-col [nzSpan]="6">
+        <nz-input nzPlaceHolder="请填写密码" spellcheck="false" [nzSize]="'large'" required #adminPassword="ngModel" [(ngModel)]="_addNewData.password"></nz-input>
+        <div class="form-item-invalid" *ngIf="adminPassword.dirty&&adminPassword.errors">请填写管理员登录密码</div>
+      </div>
+    </div>
+    <div nz-row style="margin: 16px 0;">
+      <div nz-col [nzSpan]="6">
+        <nz-select style="width: 100%;" [(ngModel)]="_addNewData.group" [nzPlaceHolder]="'请选择管理组'">
+          <nz-option *ngFor="let group of adminGroup" [nzLabel]="group.name" [nzValue]="group._id"></nz-option>
+        </nz-select>
+      </div>
+    </div>
+    <div nz-form-item nz-row>
+      <div nz-form-control nz-col [nzSpan]="6">
+        <button nz-button [nzType]="'primary'" [nzSize]="'large'" [disabled]="adminName.errors||adminPassword.errors" (click)="addAdminUser()" [nzLoading]="_addItemLoading">提交</button>
+      </div>
+    </div>
+  </nz-collapse>
+</nz-collapseset>
+
 <nz-table #nzTable [nzAjaxData]="_dataSet" nzShowTotal [nzShowSizeChanger]="true" [nzShowQuickJumper]="true" [nzLoading]="_loading"
   [nzTotal]="_total" [(nzPageSize)]="_pageSize" [(nzPageIndex)]="_current" (nzPageIndexChange)="refreshData()" [nzPageSize]="_pageSize"
   (nzPageSizeChange)="_pageSizeChange($event)">
@@ -33,7 +58,7 @@
       </td>
       <td nz-td>{{i+1}}</td>
       <td nz-td>{{data.name}}</td>
-      <td nz-td>{{data.groupId}}-{{data.groupName}}</td>
+      <td nz-td>{{data.group.name}}</td>
       <td nz-td>操作</td>
     </tr>
   </tbody>

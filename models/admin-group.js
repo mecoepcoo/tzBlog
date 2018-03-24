@@ -24,6 +24,9 @@ const adminGroupSchema = new mongoose.Schema(
 // 获取列表
 adminGroupSchema.static('getAdminGroups', function () {
   return this.find()
+    .sort({
+      _id: -1
+    })
     .populate([
       {
         path: '_auth',
