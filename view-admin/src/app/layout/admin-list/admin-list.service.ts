@@ -36,12 +36,12 @@ export class AdminListService {
   }
 
   /* 修改 */
-  editAdminUser(id: string, name: string, password: string, group: string): Observable<any> {
+  editAdminUser(id: string, name: string, group: string, isBan: boolean): Observable<any> {
     const url = `${Config.apiRoot}adminusers/${id}`;
     return this.http.put(url, {
-      name: name,
-      password: password,
-      group: group
+      adminName: name,
+      group: group,
+      isBan: isBan
     });
   }
 

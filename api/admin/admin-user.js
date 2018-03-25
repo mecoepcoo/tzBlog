@@ -215,7 +215,7 @@ router.route('/adminusers/:id')
    * 
    * @apiParam {string} :id 管理员id(如果不由path传递，则写在body中)
    * @apiParam {string} adminName 新的管理员名
-   * @apiParam {string} password 新的密码
+   * @apiParam {string} group 管理组id
    * @apiParam {boolean} isBan 是否禁用 true: 禁用，false: 启用
    * @apiUse STATUS
    * @apiSuccess {json} data 
@@ -241,7 +241,6 @@ router.route('/adminusers/:id')
     const adminName = req.body.adminName || '';
     const group = req.body.group || '';
     const isBan = req.body.isBan;
-    let password = req.body.password || '';
     // 参数校验
     try {
       if (!id.length) {
@@ -249,9 +248,6 @@ router.route('/adminusers/:id')
       }
       if (!adminName.length) {
         throw new Error('请填写用户名');
-      }
-      if (!password.length) {
-        throw new Error('请填写密码');
       }
       if (!group.length) {
         throw new Error('请填写管理组id');
@@ -263,14 +259,9 @@ router.route('/adminusers/:id')
       return re.r400(e, e.message, res);
     }
 
-    const salt = hash.setSalt(32);
-    password = hash.buildPwd(password, salt);
-
     const adminUsersQuery = AdminUserModel.AdminUser.findOne().where({'_id': id}).exec()
     .then(adminUser => {
       adminUser.name = adminName;
-      adminUser.password = password;
-      adminUser.salt = salt;
       adminUser._group = group;
       adminUser.isBan = isBan;
       return adminUser.save();

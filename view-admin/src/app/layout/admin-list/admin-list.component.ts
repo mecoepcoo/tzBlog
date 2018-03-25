@@ -99,6 +99,7 @@ export class AdminListComponent implements OnInit {
         this._dataSet = [];
         admins.data.forEach((admin, index) => {
           this._dataSet.push({
+            id: admin._id,
             name: admin.name,
             group: admin._group,
             createDate: admin.createDate,
@@ -136,6 +137,68 @@ export class AdminListComponent implements OnInit {
         }
       }, err => {
         this._addItemLoading = false;
+        this._message.create('error', '网络连接异常');
+      });
+  }
+
+  _editData(id) {
+    _.forEach(this._dataSet, (data, index) => {
+      data._editable = false;
+    });
+    this._editNewData = _.cloneDeep(_.assign(_.find(this._dataSet, { id: id }), { _editable: true }));
+    console.log(this._editNewData);
+  }
+
+  _cancelEditData() {
+    _.forEach(this._dataSet, (data, index) => {
+      data._editable = false;
+    });
+    this._editNewData = {};
+  }
+
+  /* 修改 */
+  saveEditData() {
+    // 校验name
+    if (this._editNewData.name.length === 0) {
+      return this._message.create('error', '请填写管理员名称', { nzDuration: 3000 });
+    }
+    this._editItemLoading = true;
+    this._adminListService.editAdminUser(this._editNewData.id, this._editNewData.name, this._editNewData.group._id, this._editNewData.isBan)
+      .subscribe(data => {
+        this._editItemLoading = false;
+        if (data.status === 201) {
+          this.refreshData();
+          this._message.create('success', data.message);
+        } else {
+          this._message.create('error', data.message, { nzDuration: 3000 });
+        }
+      }, err => {
+        this._editItemLoading = false;
+        this._message.create('error', '网络连接异常');
+      });
+  }
+
+  removeItemModal(id: string, name: string) {
+    this._modalService.confirm({
+      title: `是否要删除管理员“${name}”`,
+      content: '<b>删除后不可恢复</b>',
+      showConfirmLoading: true,
+      onOk: () => {
+        this.removeItem(id);
+      }
+    });
+  }
+
+  /* 删除单条 */
+  removeItem(id: string) {
+    this._adminListService.removeAdminUser(id)
+      .subscribe(data => {
+        if (data.status === 204) {
+          this.refreshData();
+        } else {
+          this._message.create('error', data.message, { nzDuration: 3000 });
+        }
+      }, err => {
         this._message.create('error', '网络连接异常');
       });
   }
