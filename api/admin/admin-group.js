@@ -9,7 +9,7 @@ const AdminUserModel = require('../../models/admin-user');
 const AdminAuthModel = require('../../models/admin-auth');
 
 /**
- * @apiDefine AdminUser 管理员
+ * @apiDefine AdminGroup 管理组
  */
 
 /**
@@ -18,20 +18,16 @@ const AdminAuthModel = require('../../models/admin-auth');
  */
 router.route('/admingroups')
   /**
-   * @api {get} /adminusers 获取管理员列表
-   * @apiName getAdmins
-   * @apiDescription 获取管理员列表
-   * @apiGroup AdminUser
+   * @api {get} /admingroups 获取管理组列表
+   * @apiName getAdminGroups
+   * @apiDescription 获取管理组列表
+   * @apiGroup AdminGroup
    * @apiVersion 1.0.0
    *
-   * @apiParam {number} page=1 页码
-   * @apiParam {number} pagesize=10 每页条数
    * @apiUse STATUS
    * @apiSuccess {json} data
-   * @apiSuccess {string} data.name 管理员用户名
-   * @apiSuccess {number} data.createDate 管理员创建时间
-   * @apiSuccess {number} total 总条数
-   * @apiSuccess {boolean} isBan 是否被禁用, false: 启用，true: 禁用
+   * @apiSuccess {string} data.name 管理组名称
+   * @apiSuccess {json} data._auth 管理组权限
    * 
    * @apiSuccessExample {json} Success - Example:
    *     HTTP / 1.1 200 OK
@@ -41,18 +37,17 @@ router.route('/admingroups')
    *         "data": [
    *             {
    *                 "_id": "5a6c63ad2a092f4e817dd9fb",
-   *                 "name": "admin2",
-   *                 "createDate": 1517052845840,
-   *                 "isBan": false
-   *             },
-   *             {
-   *                 "_id": "5a6c63a92a092f4e817dd9fa",
-   *                 "name": "admin",
-   *                 "createDate": 1517052841933,
-   *                 "isBan": false
+   *                 "name": "group1",
+   *                 "_auth": {
+   *                     {
+   *                         "_id": "5a6c63ad2a092f4e817dd9fb",
+   *                         "name": "文章列表",
+   *                         "category": "文章"
+   *                     }
+   *                 }
    *             }
    *         ],
-   *         "total": 2
+   *         "total": -1
    *     }
    */
   .get( (req, res) => {
@@ -66,32 +61,18 @@ router.route('/admingroups')
   })
 
   /**
-   * @api {post} /adminusers 新增管理员
-   * @apiName createAdmin
-   * @apiDescription 新增管理员
-   * @apiGroup AdminUser
+   * @api {post} /admingroups 新增管理组
+   * @apiName createAdminGroup
+   * @apiDescription 新增管理组
+   * @apiGroup AdminGroup
    * @apiVersion 1.0.0
    * 
-   * @apiParam {string} adminName 管理员用户名
-   * @apiParam {string} password 密码 
+   * @apiParam {string} groupname 管理组名称
+   * @apiParam {string} auth 权限（json数组字符串）
    * @apiUse STATUS
    * @apiSuccess {json} data 
-   * @apiSuccess {string} data.name 管理员名
-   * @apiSuccess {number} data.createDate 创建时间
-   * @apiSuccess {string} data.isBan 管理员是否禁用 true: 禁用，false: 启用
-   * @apiSuccessExample {json} Success - Example:
-   *     HTTP / 1.1 200 OK
-   *     {
-   *       "status": 201,
-   *       "message": "插入成功",
-   *       "data": {
-   *         "__v": 0,
-   *         "name": "admin",
-   *         "createDate": 1517052248305,
-   *         "isBan": false,
-   *         "_id": "5a6c61582a092f4e817dd9f7"
-   *        }
-   *      }
+   * @apiSuccess {string} data.name 管理组名
+   * @apiSuccess {string} data._auth 权限
    */
   .post( (req, res) => {
     const groupName = req.body.groupname || '';
@@ -124,33 +105,19 @@ router.route('/admingroups')
 
 router.route('/admingroups/:id')
   /**
-   * @api {put} /adminusers/:id 修改指定管理员
-   * @apiName updateAdmin
-   * @apiDescription 修改指定管理员
-   * @apiGroup AdminUser
+   * @api {put} /admingroups/:id 修改指定管理组
+   * @apiName updateAdminGroup
+   * @apiDescription 修改指定管理组
+   * @apiGroup AdminGroup
    * @apiVersion 1.0.0
    * 
-   * @apiParam {string} :id 管理员id(如果不由path传递，则写在body中)
-   * @apiParam {string} adminName 新的管理员名
-   * @apiParam {string} password 新的密码
-   * @apiParam {boolean} isBan 是否禁用 true: 禁用，false: 启用
+   * @apiParam {string} :id 管理组id(如果不由path传递，则写在body中)
+   * @apiParam {string} groupname 新的管理组名
+   * @apiParam {string} auth 新的权限
    * @apiUse STATUS
    * @apiSuccess {json} data 
-   * @apiSuccess {string} data.name 管理员名
-   * @apiSuccess {string} data.isBan 管理员是否禁用 true: 禁用，false: 启用
-   * @apiSuccessExample {json} Success - Example:
-   *     HTTP / 1.1 200 OK
-   *     {
-   *       "status": 201,
-   *       "message": "更新成功",
-   *       "data": {
-   *         "__v": 0,
-   *         "name": "admin",
-   *         "createDate": 1517052248305,
-   *         "isBan": false,
-   *         "_id": "5a6c61582a092f4e817dd9f7"
-   *        }
-   *      }
+   * @apiSuccess {string} data.name 管理组名
+   * @apiSuccess {string} data._auth 管理组权限
    */
   .put( (req, res) => {
     let id = req.params.id || req.body.id || '';
@@ -189,13 +156,13 @@ router.route('/admingroups/:id')
   })
   
   /**
-   * @api {delete} /adminusers/:id 删除指定管理员
-   * @apiName deleteAdmin
-   * @apiDescription 删除指定管理员
-   * @apiGroup AdminUser
+   * @api {delete} /admingroups/:id 删除指定管理组
+   * @apiName deleteAdminGroup
+   * @apiDescription 删除指定管理组
+   * @apiGroup AdminGroup
    * @apiVersion 1.0.0
    * 
-   * @apiParam {string} :id 管理员id 
+   * @apiParam {string} :id 管理组id 
    * @apiUse STATUS
    * @apiSuccess {json} data 
    * @apiSuccessExample {json} Success - Example:
@@ -232,6 +199,18 @@ router.route('/admingroups/:id')
   });
 
 router.route('/adminauth')
+  /**
+   * @api {get} /adminauth 获取管理权限列表
+   * @apiName getAdminAuth
+   * @apiDescription 获取管理权限列表
+   * @apiGroup AdminGroup
+   * @apiVersion 1.0.0
+   *
+   * @apiUse STATUS
+   * @apiSuccess {json} data
+   * @apiSuccess {string} data.name 权限名称
+   * @apiSuccess {string} data.category 权限分类名称
+   */
   .get( (req, res) => {
     AdminAuthModel.AdminAuth.getAdminAuth()
       .then(data => {

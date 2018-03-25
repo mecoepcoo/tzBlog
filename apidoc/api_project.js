@@ -29,6 +29,12 @@ define({
     "createTag",
     "updateTag",
     "deleteTag",
+    "AdminGroup",
+    "getAdminGroups",
+    "createAdminGroup",
+    "updateAdminGroup",
+    "deleteAdminGroup",
+    "getAdminAuth",
     "AdminUser",
     "getAdmins",
     "createAdmin",
@@ -59,7 +65,7 @@ define({
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
-    "time": "2018-03-14T15:20:25.752Z",
+    "time": "2018-03-25T11:08:33.082Z",
     "url": "http://apidocjs.com",
     "version": "0.17.6"
   }

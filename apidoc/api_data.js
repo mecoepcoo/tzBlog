@@ -1,6 +1,291 @@
 define({ "api": [
   {
     "type": "post",
+    "url": "/admingroups",
+    "title": "新增管理组",
+    "name": "createAdminGroup",
+    "description": "<p>新增管理组</p>",
+    "group": "AdminGroup",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "groupname",
+            "description": "<p>管理组名称</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "auth",
+            "description": "<p>权限（json数组字符串）</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "data",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>管理组名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data._auth",
+            "description": "<p>权限</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>文本信息</p>"
+          }
+        ]
+      }
+    },
+    "filename": "api/admin/admin-group.js",
+    "groupTitle": "管理组"
+  },
+  {
+    "type": "delete",
+    "url": "/admingroups/:id",
+    "title": "删除指定管理组",
+    "name": "deleteAdminGroup",
+    "description": "<p>删除指定管理组</p>",
+    "group": "AdminGroup",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": ":id",
+            "description": "<p>管理组id</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "data",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>文本信息</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success - Example:",
+          "content": "HTTP / 1.1 200 OK\n{\n    \"status\": 204,\n    \"message\": \"删除成功\",\n    \"data\": []\n}",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/admin/admin-group.js",
+    "groupTitle": "管理组"
+  },
+  {
+    "type": "get",
+    "url": "/adminauth",
+    "title": "获取管理权限列表",
+    "name": "getAdminAuth",
+    "description": "<p>获取管理权限列表</p>",
+    "group": "AdminGroup",
+    "version": "1.0.0",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "data",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>权限名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data.category",
+            "description": "<p>权限分类名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>文本信息</p>"
+          }
+        ]
+      }
+    },
+    "filename": "api/admin/admin-group.js",
+    "groupTitle": "管理组"
+  },
+  {
+    "type": "get",
+    "url": "/admingroups",
+    "title": "获取管理组列表",
+    "name": "getAdminGroups",
+    "description": "<p>获取管理组列表</p>",
+    "group": "AdminGroup",
+    "version": "1.0.0",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "data",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>管理组名称</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "data._auth",
+            "description": "<p>管理组权限</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>文本信息</p>"
+          }
+        ]
+      },
+      "examples": [
+        {
+          "title": "Success - Example:",
+          "content": " HTTP / 1.1 200 OK\n{\n     \"status\": 200,\n     \"message\": \"操作成功\",\n     \"data\": [\n         {\n             \"_id\": \"5a6c63ad2a092f4e817dd9fb\",\n             \"name\": \"group1\",\n             \"_auth\": {\n                 {\n                     \"_id\": \"5a6c63ad2a092f4e817dd9fb\",\n                     \"name\": \"文章列表\",\n                     \"category\": \"文章\"\n                 }\n             }\n         }\n     ],\n     \"total\": -1\n }",
+          "type": "json"
+        }
+      ]
+    },
+    "filename": "api/admin/admin-group.js",
+    "groupTitle": "管理组"
+  },
+  {
+    "type": "put",
+    "url": "/admingroups/:id",
+    "title": "修改指定管理组",
+    "name": "updateAdminGroup",
+    "description": "<p>修改指定管理组</p>",
+    "group": "AdminGroup",
+    "version": "1.0.0",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": ":id",
+            "description": "<p>管理组id(如果不由path传递，则写在body中)</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "groupname",
+            "description": "<p>新的管理组名</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "auth",
+            "description": "<p>新的权限</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "json",
+            "optional": false,
+            "field": "data",
+            "description": ""
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data.name",
+            "description": "<p>管理组名</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data._auth",
+            "description": "<p>管理组权限</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "message",
+            "description": "<p>文本信息</p>"
+          }
+        ]
+      }
+    },
+    "filename": "api/admin/admin-group.js",
+    "groupTitle": "管理组"
+  },
+  {
+    "type": "post",
     "url": "/adminusers",
     "title": "新增管理员",
     "name": "createAdmin",
@@ -23,6 +308,13 @@ define({ "api": [
             "optional": false,
             "field": "password",
             "description": "<p>密码</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "group",
+            "description": "<p>管理组id</p>"
           }
         ]
       }
@@ -297,8 +589,8 @@ define({ "api": [
             "group": "Parameter",
             "type": "string",
             "optional": false,
-            "field": "password",
-            "description": "<p>新的密码</p>"
+            "field": "group",
+            "description": "<p>管理组id</p>"
           },
           {
             "group": "Parameter",
@@ -1307,7 +1599,7 @@ define({ "api": [
       ]
     },
     "filename": "api/home/post.js",
-    "groupTitle": "文章"
+    "groupTitle": "文章（客户端）"
   },
   {
     "type": "post",
