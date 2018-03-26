@@ -1,0 +1,68 @@
+@bg_black: #f5f5f5;
+@f_color: #555;
+@font: "Microsoft YaHei","Ubuntu", "Sans Regular";
+@f_size: 16px;
+@h_width: 700px;
+@padding_left: 320px;
+.a(@f_color, @hover_color) {
+  color: @f_color;
+  text-decoration: none;
+  &:hover {
+    color: @hover_color;
+  }
+}
+
+#header {
+  display: block;
+  background-color: @bg_black;
+  font-family: @font;
+  color: @f_color;
+  font-size: @f_size;
+  text-align: center;
+}
+
+#router-outlet {
+  //padding-left: @padding_left;
+  display: block;
+  padding-bottom: 60px;
+  height: auto;
+  min-height: 100%;
+}
+
+.main {
+  padding-left: @padding_left;
+  height: auto;
+  min-height: 100%;
+}
+
+#footer {
+  padding-left: @padding_left;
+  display: block;
+  position: relative;
+  left: 0;
+  bottom: 0px;
+  margin-top: -60px;
+  height: 60px;
+  font-size: @f_size - 2;
+  color: #c5c5c5;
+  text-align: center;
+}
+
+#sidebar {
+  @side_w: 320px;
+  @bg_black: #222;
+  @f_color: #aaa;
+  @font: "Microsoft YaHei","Ubuntu", "Sans Regular";
+  @f_size: 14px;
+  display: block;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  background-color: @bg_black;
+  width: @side_w;
+  color: @f_color;
+  font-family: @font;
+  font-size: @f_size;
+}

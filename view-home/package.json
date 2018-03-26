@@ -1,10 +1,10 @@
 {
-  "name": "view-admin",
+  "name": "view-home",
   "version": "0.0.0",
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve -o",
+    "start": "ng serve --port 4300",
     "build": "ng build --prod --aot --base-href ./",
     "test": "ng test",
     "lint": "ng lint",
@@ -21,11 +21,8 @@
     "@angular/platform-browser": "^5.2.0",
     "@angular/platform-browser-dynamic": "^5.2.0",
     "@angular/router": "^5.2.0",
-    "angular2-cookie": "^1.2.6",
     "classlist.js": "^1.1.20150312",
     "core-js": "^2.4.1",
-    "lodash": "^4.17.5",
-    "ng-zorro-antd": "^0.6.14",
     "rxjs": "^5.5.6",
     "web-animations-js": "^2.3.1",
     "zone.js": "^0.8.19"
@@ -36,7 +33,6 @@
     "@angular/language-service": "^5.2.0",
     "@types/jasmine": "~2.8.3",
     "@types/jasminewd2": "~2.0.2",
-    "@types/lodash": "^4.14.104",
     "@types/node": "~6.0.60",
     "codelyzer": "^4.0.1",
     "jasmine-core": "~2.8.0",

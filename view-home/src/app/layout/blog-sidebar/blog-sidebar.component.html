@@ -1,0 +1,64 @@
+<div class="sidebar-inner">
+  <section class="sidebar-panel">
+    <div class="author">
+      <div class="img"></div>
+      <p>Tianzhen</p>
+      <p>心者，栖神之舍；神者，知识之本；思者，神识之妙用也。</p>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div>
+        <a routerLink="/archives">
+          <span>{{ numbs.postNum }}</span>
+          <span>文章</span>
+        </a>
+      </div>
+      <div>
+        <a routerLink="/categories">
+          <span>{{ numbs.categoryNum }}</span>
+          <span>分类</span>
+        </a>
+      </div>
+      <div>
+        <a routerLink="/tags">
+          <span>{{ numbs.tagNum }}</span>
+          <span>标签</span>
+        </a>
+      </div>
+    </nav>
+
+    <div class="social">
+      <div>
+        <span>
+            <a href="https://github.com/mecoepcoo" target="_blank">Github</a>
+        </span>
+        <span>
+          <a class="wechat-img">Wechat</a>
+        </span>
+        <span>
+          <a href="http://steamcommunity.com/id/mecoepcoo" target="_blank">Dota2</a>
+        </span>
+      </div>
+      <div>
+        <span>
+          <a href="mailto:340349237@qq.com">Mail</a>
+        </span>
+        <span>
+          <a href="https://zhuanlan.zhihu.com/tianzhen" target="_blank">Zhihu</a>
+        </span>
+        <span>
+          <a href="http://www.jianshu.com/u/c0d59133d5e3" target="_blank">Jianshu</a>
+        </span>
+      </div>
+    </div>
+
+    <div class="links">
+      <div class="links-title">
+        友情链接
+      </div>
+      <ul class="links-list">
+        <li class="links-list-item" *ngFor="let blogroll of blogrolls"><a [href]="blogroll.url" target="_blank">{{ blogroll.name }}</a></li>
+      </ul>
+    </div>
+  </section>
+</div>
