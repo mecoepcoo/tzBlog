@@ -8,6 +8,7 @@ import { LayoutComponent } from './layout.component';
 import { BlogHeaderComponent } from './blog-header/blog-header.component';
 import { BlogSidebarComponent } from './blog-sidebar/blog-sidebar.component';
 import { BlogFooterComponent } from './blog-footer/blog-footer.component';
+import { PostmainComponent } from './postmain/postmain.component';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BaseInterceptor } from '../share/base.intercept';
@@ -23,6 +24,7 @@ import { BaseInterceptor } from '../share/base.intercept';
     BlogHeaderComponent,
     BlogSidebarComponent,
     BlogFooterComponent,
+    PostmainComponent,
   ],
   providers: [
     {

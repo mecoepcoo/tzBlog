@@ -9,7 +9,9 @@ import { parseTime } from '../../share/timeToDate.fn';
 @Component({
   selector: 'app-postmain',
   templateUrl: './postmain.component.html',
-  styleUrls: ['../../share/css/postmain.css'],
+  styleUrls: [
+    './postmain.component.css'
+  ],
   providers: [
     PostService
   ]
@@ -63,7 +65,18 @@ export class PostmainComponent implements OnInit {
         this.posts = [];
         this.pageConfig.totalNum = datas.totalNum;
         this.pageConfig.totalPage = Math.ceil(this.pageConfig.totalNum / this.pageConfig.pageSize);
-/*         datas.data.forEach( (data, index) => {
+        datas.data.forEach( (data, index) => {
+          const postsEle = {
+            id: data._id,
+            title: data.title,
+            author: data.author,
+            category: data._category,
+            content: data.content,
+            reading: data.reading,
+            order: data.order,
+            tags: data._tags,
+            date: parseTime(data.date, 3)
+          };
           this.posts[index] = {};
           this.posts[index].id = data._id;
           this.posts[index].title = data.title;
@@ -72,7 +85,7 @@ export class PostmainComponent implements OnInit {
           this.posts[index].tags = data.tags;
           this.posts[index].date = parseTime(data.date, 3);
           this.posts[index].reading = data.reading;
-          let content = data.content;
+/*           let content = data.content;
           let cutFlag = '<!--more-->';
           if (/<\!--more-->/.test(content)) {
             this.posts[index].content = content.substring(0, content.indexOf(cutFlag));
@@ -86,8 +99,8 @@ export class PostmainComponent implements OnInit {
           for (let text of markdown.getHtml()) {
             tempStr +=text;
           }
-          this.posts[index].content = tempStr;
- */
+          this.posts[index].content = tempStr; */
+
         });
       }, error => {
         console.error('文章载入失败');
