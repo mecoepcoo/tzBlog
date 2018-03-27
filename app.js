@@ -31,7 +31,8 @@ app.use('/', index);
 
 // 处理跨域
 var ALLOWED_ORIGIN = [
-  'http://localhost:4200'
+  'http://localhost:4200',
+  'http://localhost:4300',
 ];
 
 function isOriginAllowed(reqOrigin, allowedOrigin) {

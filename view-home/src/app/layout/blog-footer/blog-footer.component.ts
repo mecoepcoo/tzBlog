@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { StatisticService } from '../share/statistic.service';
+import { StatisticService } from '../../share/statistic.service';
 
 @Component({
   selector: 'app-blog-footer',
   templateUrl: './blog-footer.component.html',
-  styleUrls: ['../../public/css/header.css'],
+  styleUrls: [
+    './blog-footer.component.css'
+  ],
   providers: [
     StatisticService
   ]

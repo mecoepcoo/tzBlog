@@ -1,0 +1,36 @@
+<div id="post-main" class="post-main">
+  <div class="post-main-inner">
+    <div class="content">
+      <div class="content-wrap">
+        <div class="posts" *ngFor="let post of posts">
+          <div class="posts-date">
+            <div class="posts-date-cont">
+              <span class="day">{{ post.date.day }}</span>
+              <span class="month">
+                  <span>{{ post.date.month }}</span>
+              </span>
+              <span class="year">{{ post.date.year }}</span>
+            </div>
+          </div>
+          <div class="posts-head">
+            <h1 class="posts-head-title"><a [routerLink]="['/home/post', post.id]">{{ post.title }}</a></h1>
+            <div class="posts-head-meta">
+              <span class="posts-head-meta-category">分类于<a [href]="'#/categories?id='+post.category._id+'&cname='+post.category.category">{{ post.category.category }}</a></span>
+              <span class="posts-head-meta-tag">标签<a *ngFor="let tag of post.tags">{{ tag.name }}</a></span>
+              <span class="posts-head-meta-read"><span>{{ post.reading }}</span>次阅读</span>
+            </div>
+          </div>
+          <div class="posts-body">
+            <p [innerHTML]="post.content" class="easy-markdown"></p>
+            <div class="posts-body-more">
+              <a [routerLink]="['/home/post', post.id]" class="btn-a">阅读全文&gt;&gt;</a>
+            </div>
+          </div>
+        </div>
+
+        <my-page [pageConfig]="pageConfig" (changePage)="getPageData($event)"></my-page>
+      </div>
+
+    </div>
+  </div>
+</div>

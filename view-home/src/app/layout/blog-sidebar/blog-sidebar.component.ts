@@ -6,7 +6,9 @@ import { BlogrollService } from '../../share/blogroll.service';
 @Component({
   selector: 'app-blog-sidebar',
   templateUrl: './blog-sidebar.component.html',
-  styleUrls: ['../../public/css/sidebar.css'],
+  styleUrls: [
+    './blog-sidebar.component.css'
+  ],
   providers: [
     BlogrollService
   ]
@@ -41,7 +43,7 @@ export class BlogSidebarComponent implements OnInit {
     return this._blogrollService.getBlogroll()
       .subscribe(datas => {
         this.blogrolls = [];
-        datas.forEach( (data, index) => {
+        datas.data.forEach( (data, index) => {
           const blogrollsEle = {
             id: data._id,
             name: data.name,

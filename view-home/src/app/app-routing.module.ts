@@ -8,7 +8,7 @@ export const ROUTER_CONFIG: Routes = [
     pathMatch: 'full'
   },
   {
-    path: '/home',
+    path: 'home',
     loadChildren: 'app/layout/layout.module#LayoutModule',
   },
   {

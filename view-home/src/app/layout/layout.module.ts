@@ -5,6 +5,9 @@ import { layoutRoutes } from './layout.routes';
 import { ShareModule } from '../share/share.module';
 
 import { LayoutComponent } from './layout.component';
+import { BlogHeaderComponent } from './blog-header/blog-header.component';
+import { BlogSidebarComponent } from './blog-sidebar/blog-sidebar.component';
+import { BlogFooterComponent } from './blog-footer/blog-footer.component';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BaseInterceptor } from '../share/base.intercept';
@@ -17,6 +20,9 @@ import { BaseInterceptor } from '../share/base.intercept';
   ],
   declarations: [
     LayoutComponent,
+    BlogHeaderComponent,
+    BlogSidebarComponent,
+    BlogFooterComponent,
   ],
   providers: [
     {

@@ -1,0 +1,178 @@
+.pre(@style, @value) {
+  -webkit-@{style}: @value;
+  -moz-@{style}: @value;
+  -ms-@{style}: @value;
+  -o-@{style}: @value;
+    @{style}: @value;
+}
+
+.border-radius(@value) {
+  .pre(border-radius, @value);
+}
+
+.box-shadow(@value) {
+  .pre(box-shadow, @value);
+}
+
+.transition(@value) {
+  .pre(transition, @value);
+}
+
+.transform(@value) {
+  .pre(transform, @value);
+}
+
+.animation(@value){
+  .pre(animation, @value);
+}
+
+.keyframes (@name, @frames){
+  @-webkit-keyframes @name { @frames(); }
+  @-moz-keyframes @name { @frames(); }
+  @-ms-keyframes @name { @frames();}
+  @-o-keyframes @name { @frames(); }
+  @keyframes @name { @frames(); }
+}
+
+
+@side_w: 320px;
+@bg_black: #222;
+@f_color: #aaa;
+@font: "Microsoft YaHei","Ubuntu", "Sans Regular";
+@f_size: 14px;
+
+.a() {
+  color: @f_color;
+  text-decoration: none;
+  &:hover {
+    color: white;
+  }
+}
+
+
+
+.sidebar-inner {
+  padding: 48px 10px 20px 10px;
+  text-align: center;
+
+  .sidebar-panel {
+    .author {
+      .img {
+        background-image: url("../../../assets/images/avatar.jpg");
+        background-size: cover;
+        @img_w: 96px;
+        display: block;
+        margin: 0 auto;
+        padding: 1px;
+        max-width: @img_w;
+        height: @img_w;
+        .border-radius(@img_w);
+        border: 4px solid #555;
+
+        &:hover {
+          .keyframes(avatar, {
+            0% {.transform(rotate(0deg))}
+            30% {.transform(rotate(45deg))}
+            55% {.transform(rotate(-40deg))}
+            65% {.transform(rotate(20deg))}
+            75% {.transform(rotate(-20deg))}
+            90% {.transform(rotate(10deg))}
+            100% {.transform(rotate(0deg))}
+          });
+          .animation(avatar 0.5s linear);
+        }
+      }
+      p {
+        font-size: @f_size + 2;
+        color: white;
+        &:last-child {
+          font-size: @f_size - 2;
+          color: @f_color;
+        }
+      }
+
+    }
+
+    .sidebar-nav {
+      margin-top: 30px;
+      div {
+        display: inline-block;
+        padding-left: 15px;
+        padding-right: 15px;
+
+        a {
+          .a();
+
+          span {
+            display: block;
+            font-size: @f_size - 1;
+            &:first-child {
+              font-size: @f_size + 2;
+            }
+          }
+        }
+      }
+    }
+
+    .social {
+      margin-top: 50px;
+      div {
+        margin-top: 10px;
+      }
+      span {
+        font-size: @f_size - 1;
+      }
+      .wechat-img::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 28px;
+        z-index: 999;
+        display: block;
+        width: 0;
+        height: 0;
+        background-image: url("../../../assets/images/myqrcode.jpg");
+        background-size: cover;
+        .transition(all 0.5s);
+      }
+      .wechat-img:hover::before {
+        //display: block;
+
+        top: -160px;
+        left: -46px;
+        width: 150px;
+        height: 150px;
+      }
+      a {
+        .a();
+        position: relative;
+        display: inline-block;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        width: 56px;
+        border-bottom: 1px solid #555;
+        cursor: pointer;
+      }
+    }
+
+    .links {
+      margin-top: 50px;
+      &-title {
+        font-weight: bold;
+      }
+
+      &-list {
+        list-style: none;
+        overflow: hidden;
+        padding: 0;
+        &-item {
+          float: left;
+          padding: 5px 15px 5px 15px;
+          a {
+            .a();
+          }
+        }
+      }
+    }
+  }
+}

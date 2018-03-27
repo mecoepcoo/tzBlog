@@ -5,11 +5,11 @@ export const layoutRoutes: Routes = [
   {
     path: '',
     component: LayoutComponent,
-    children: [
+    // children: [
       // {
       //   path: 'adminuser',
       //   component: AdminListComponent,
       // }
-    ]
+    // ]
   }
 ];
