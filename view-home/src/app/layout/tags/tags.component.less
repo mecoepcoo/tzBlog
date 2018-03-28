@@ -1,0 +1,55 @@
+.pre(@style, @value) {
+  -webkit-@{style}: @value;
+  -moz-@{style}: @value;
+  -ms-@{style}: @value;
+  -o-@{style}: @value;
+    @{style}: @value;
+}
+
+.text-shadow(@value) {
+  .pre(text-shadow, @value);
+}
+
+#tags {
+  @f_color: #555;
+  @font: "Microsoft YaHei", "Ubuntu", "Sans Regular";
+  @f_size: 14px;
+  @h_width: 700px;
+  @bg_color: #222;
+
+  .a(@f_color, @hover_color) {
+    color: @f_color;
+    text-decoration: none;
+    &:hover {
+      color: @hover_color;
+    }
+  }
+
+  display: block;
+  margin-top: 80px;
+  margin-bottom: 80px;
+  font-family: @font;
+  font-size: @f_size;
+  color: @f_color;
+  text-align: center;
+
+  .tags-inner {
+    position: relative;
+    margin: 0 auto;
+    width: @h_width;
+    text-align: left;
+    .tags-total {
+      font-size: @f_size + 2;
+      text-align: center;
+    }
+    .tags-content {
+      .tags-item {
+        vertical-align: middle;
+        .text-shadow(1px 1px 1px #777);
+        .a(@f_color, #222);
+        display: inline-block;
+        margin: 10px;
+      }
+    }
+  }
+}

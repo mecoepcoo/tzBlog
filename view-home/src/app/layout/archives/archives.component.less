@@ -1,0 +1,143 @@
+.pre(@style, @value) {
+  -webkit-@{style}: @value;
+  -moz-@{style}: @value;
+  -ms-@{style}: @value;
+  -o-@{style}: @value;
+    @{style}: @value;
+}
+
+.transform(@value) {
+  .pre(transform, @value);
+}
+
+.transition(@value) {
+  .pre(transition, @value);
+}
+
+.border-radius(@value) {
+  .pre(border-radius, @value);
+}
+
+#archives {
+  @f_color: #555;
+  @font: "Microsoft YaHei", "Ubuntu", "Sans Regular";
+  @f_size: 14px;
+  @h_width: 700px;
+  @bg_color: #222;
+
+  .a(@f_color, @hover_color) {
+    color: @f_color;
+    text-decoration: none;
+    &:hover {
+      color: @hover_color;
+    }
+  }
+
+  display: block;
+  margin-top: 80px;
+  font-family: @font;
+  font-size: @f_size;
+  color: @f_color;
+  text-align: center;
+
+  .archives-inner {
+    position: relative;
+    margin: 0 auto;
+    width: @h_width;
+    text-align: left;
+
+    .archives-content {
+      position: relative;
+      .archives-wrap {
+
+        &::before {
+          content: '';
+          position: absolute;
+          top: 16px;
+          left: -18px;
+          width: 4px;
+          height: 100%;
+          background-color: #eee;
+          z-index: -1;
+        }
+
+        .archives-detail {
+          position: relative;
+          margin-top: 60px;
+          &-title {
+            span {
+              margin-left: 10px;
+              color: @f_color + #333;
+            }
+          }
+          h2 {
+            margin-bottom: 45px;
+            &::before {
+              content: '';
+              position: absolute;
+              left: -21px;
+              top: 10px;
+              width: 8px;
+              height: 8px;
+              background-color: #bbb;
+              .border-radius(50%);
+              border: 1px solid #fff;
+            }
+          }
+          &-item {
+            position: relative;
+            margin-top: 35px;
+            padding-bottom: 15px;
+            border-bottom: 1px dotted #c5c5c5;
+            &-title {
+              font-size: @f_size + 2;
+              span {
+                margin-right: 10px;
+                font-size: @f_size;
+                color: @f_color + #333;
+              }
+              a {
+                .a(@f_color, #222);
+              }
+            }
+
+            &::before {
+              content: '';
+              position: absolute;
+              left: -20px;
+              top: 10px;
+              width: 6px;
+              height: 6px;
+              background-color: #bbb;
+              .border-radius(50%);
+              border: 1px solid #fff;
+              .transition(background-color 0.3s ease-in-out)
+            }
+
+            &:hover::before {
+              background-color: #222;
+            }
+          }
+
+        }
+      }
+
+    }
+
+    .archives-pages {
+      margin-top: 100px;
+      margin-bottom: 80px;
+      border-top: 1px solid #eee;
+      font-size: @f_size + 2;
+      a {
+        display: inline-block;
+        .a(@f_color, #222);
+        padding: 10px 10px 10px 10px;
+      }
+      a.active {
+        .a(#eee, #fff);
+        background-color: #222;
+      }
+    }
+  }
+}

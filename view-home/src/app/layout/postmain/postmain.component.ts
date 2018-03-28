@@ -63,7 +63,7 @@ export class PostmainComponent implements OnInit {
     return this._postService.getPosts(currentPage, pageSize)
       .subscribe(datas => {
         this.posts = [];
-        this.pageConfig.totalNum = datas.totalNum;
+        this.pageConfig.totalNum = datas.total;
         this.pageConfig.totalPage = Math.ceil(this.pageConfig.totalNum / this.pageConfig.pageSize);
         datas.data.forEach( (data, index) => {
           const postsEle = {
@@ -77,14 +77,7 @@ export class PostmainComponent implements OnInit {
             tags: data._tags,
             date: parseTime(data.date, 3)
           };
-          this.posts[index] = {};
-          this.posts[index].id = data._id;
-          this.posts[index].title = data.title;
-          this.posts[index].author = data.author;
-          this.posts[index].category = data.category;
-          this.posts[index].tags = data.tags;
-          this.posts[index].date = parseTime(data.date, 3);
-          this.posts[index].reading = data.reading;
+          this.posts.push(postsEle);
 /*           let content = data.content;
           let cutFlag = '<!--more-->';
           if (/<\!--more-->/.test(content)) {

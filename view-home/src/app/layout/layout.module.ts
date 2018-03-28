@@ -9,6 +9,11 @@ import { BlogHeaderComponent } from './blog-header/blog-header.component';
 import { BlogSidebarComponent } from './blog-sidebar/blog-sidebar.component';
 import { BlogFooterComponent } from './blog-footer/blog-footer.component';
 import { PostmainComponent } from './postmain/postmain.component';
+import { PageComponent } from './page/page.component';
+import { AboutComponent } from './about/about.component';
+import { CategoriesComponent } from './categories/categories.component';
+import { TagsComponent } from './tags/tags.component';
+import { ArchivesComponent } from './archives/archives.component';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BaseInterceptor } from '../share/base.intercept';
@@ -25,6 +30,11 @@ import { BaseInterceptor } from '../share/base.intercept';
     BlogSidebarComponent,
     BlogFooterComponent,
     PostmainComponent,
+    PageComponent,
+    AboutComponent,
+    CategoriesComponent,
+    TagsComponent,
+    ArchivesComponent,
   ],
   providers: [
     {

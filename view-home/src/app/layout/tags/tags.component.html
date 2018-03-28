@@ -1,0 +1,11 @@
+<div id="tags" class="tags">
+  <div class="tags-inner">
+    <h2 class="tags-title">标签云</h2>
+    <p class="tags-total">当前共计{{ tagCloudCount }}个标签</p>
+    <div class="tags-content">
+      <a class="tags-item" *ngFor="let tag of tagCloud" [ngStyle]="{'font-size': tag.fontSize, 'color': tag.color}">{{ tag.name }}</a>
+    </div>
+
+  </div>
+
+</div>

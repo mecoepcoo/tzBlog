@@ -1,0 +1,23 @@
+<div id="categories" class="categories">
+  <div class="categories-inner">
+    <h2 class="categories-title">分类</h2>
+    <p class="categories-total">当前共计{{ categoriesCount }}个分类</p>
+    <div class="categories-wrap">
+      <div class="categories-nav">
+        <ul class="categories-nav-list">
+          <li class="categories-nav-list-item" *ngFor="let category of categories"><a (click)="setCurrentCategory(category.id, category.name)">{{ category.name }}<span>({{ category.count }})</span></a></li>
+        </ul>
+      </div>
+      <div class="categories-content">
+        <div class="categories-detail">
+          <h2 class="categories-detail-title">{{ currentCategory.name }}<span>分类</span></h2>
+          <div class="categories-detail-item" *ngFor="let post of currentPosts">
+            <div class="categories-detail-item-title"><span>{{ post.date }}</span><a [routerLink]="['/home/post', post.id]">{{ post.title }}</a></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <app-my-page [pageConfig]="pageConfig" (changePage)="getPageData($event)"></app-my-page>
+
+  </div>
+</div>

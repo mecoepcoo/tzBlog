@@ -6,7 +6,7 @@ import { HttpEvent, HttpInterceptor, HttpHandler, HttpRequest, HttpResponse, Htt
 @Injectable()
 export class BaseInterceptor implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const httpReq = req.clone({});
+    const httpReq = req.clone();
     return next.handle(httpReq)
       .do(event => {
         if (event instanceof HttpResponse) {

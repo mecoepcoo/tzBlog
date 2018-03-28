@@ -1,0 +1,18 @@
+<div id="archives" class="archives">
+  <div class="archives-inner">
+    <p class="archives-total">当前共计{{ pageConfig.totalNum }}篇日志</p>
+    <div class="archives-content">
+      <div class="archives-wrap">
+        <div class="archives-detail" *ngFor="let item of postList">
+          <h2 class="archives-detail-year">{{ item.item.year }}</h2>
+          <div class="archives-detail-item" *ngFor="let post of item.item.posts">
+            <div class="archives-detail-item-title"><span>{{ post.date }}</span><a [routerLink]="['/home/post', post.id]">{{ post.title }}</a></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <app-my-page [pageConfig]="pageConfig" (changePage)="getPageData($event)"></app-my-page>
+  </div>
+
+</div>

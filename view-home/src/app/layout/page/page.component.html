@@ -1,0 +1,10 @@
+<div class="posts-pages" *ngIf="pageConfig.totalPage > 1">
+  <a class="page" (click)="turnPage(1)">&lt;&lt;</a>
+  <a class="page" (click)="turnPage(pageConfig.currentPage - 1)" *ngIf="pageConfig.currentPage>1">prev</a>
+  <a class="page" (click)="turnPage(page.pageNum)" [ngClass]="{'active': pageConfig.currentPage == page.pageNum}" *ngFor="let page of getPageList(pageConfig)">{{ page.pageNum }}</a>
+  <a class="page" (click)="turnPage(pageConfig.currentPage + 1)" *ngIf="pageConfig.currentPage<pageConfig.totalPage">next</a>
+  <a class="page" (click)="turnPage(pageConfig.totalPage)">&gt;&gt;</a>
+  <span class="total-page">共{{ pageConfig.totalPage }}页</span>
+  <span>第<input #skipPageInput id="skip-page" type="text" pattern="^[0-9]+$">页</span>
+  <input type="button" class="btn" value="跳转" (click)="skipPage(skipPageInput)">
+</div>

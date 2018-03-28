@@ -14,7 +14,7 @@ export class PostService {
   /* 获取文章列表（筛选） */
   getPosts(page: number = 0, pagesize: number = 0, categoryid: string = '', tagid: string = ''): Observable<any> {
     const url = `${Config.apiRoot}posts`;
-    const options = {
+    const options: any = {
       params: {
         page: page,
         pagesize: pagesize,
@@ -22,6 +22,11 @@ export class PostService {
         tagid: tagid
       }
     };
+    return this.http.get(url, options);
+  }
+
+  getPost(id: string): Observable<any> {
+    const url = `${Config.apiRoot}posts/${id}`;
     return this.http.get(url);
   }
 }
