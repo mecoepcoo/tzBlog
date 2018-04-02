@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { BlogrollService } from '../../share/blogroll.service';
-// import { DataService } from '../share/data.service';
+import { OtherService } from '../../share/other.service';
 
 @Component({
   selector: 'app-blog-sidebar',
@@ -10,7 +10,8 @@ import { BlogrollService } from '../../share/blogroll.service';
     './blog-sidebar.component.css'
   ],
   providers: [
-    BlogrollService
+    BlogrollService,
+    OtherService,
   ]
 })
 export class BlogSidebarComponent implements OnInit {
@@ -32,11 +33,12 @@ export class BlogSidebarComponent implements OnInit {
 
   constructor(
     private _blogrollService: BlogrollService,
-    // private _dataService: DataService
+    private _otherService: OtherService,
   ) { }
 
   ngOnInit() {
     this.getBlogroll();
+    this.getOthers();
   }
 
   getBlogroll() {
@@ -54,6 +56,17 @@ export class BlogSidebarComponent implements OnInit {
         });
       }, error => {
         console.error('友链载入失败');
+      });
+  }
+
+  getOthers() {
+    return this._otherService.getOthers()
+      .subscribe(datas => {
+        this.numbs = {
+          postNum: datas.data.count.post,
+          categoryNum: datas.data.count.category,
+          tagNum: datas.data.count.tag
+        };
       });
   }
 

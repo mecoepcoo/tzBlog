@@ -14,6 +14,7 @@ import { AboutComponent } from './about/about.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { TagsComponent } from './tags/tags.component';
 import { ArchivesComponent } from './archives/archives.component';
+import { PostComponent } from './post/post.component';
 
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BaseInterceptor } from '../share/base.intercept';
@@ -35,6 +36,7 @@ import { BaseInterceptor } from '../share/base.intercept';
     CategoriesComponent,
     TagsComponent,
     ArchivesComponent,
+    PostComponent,
   ],
   providers: [
     {

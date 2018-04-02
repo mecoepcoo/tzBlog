@@ -5,6 +5,7 @@ import { AboutComponent } from './about/about.component';
 import { CategoriesComponent } from './categories/categories.component';
 import { TagsComponent } from './tags/tags.component';
 import { ArchivesComponent } from './archives/archives.component';
+import { PostComponent } from './post/post.component';
 
 export const layoutRoutes: Routes = [
   {
@@ -24,12 +25,20 @@ export const layoutRoutes: Routes = [
         component: CategoriesComponent
       },
       {
+        path: 'categories/:id',
+        component: CategoriesComponent
+      },
+      {
         path: 'tags',
         component: TagsComponent
       },
       {
         path: 'archives',
         component: ArchivesComponent
+      },
+      {
+        path: 'posts/:id',
+        component: PostComponent
       }
     ]
   },

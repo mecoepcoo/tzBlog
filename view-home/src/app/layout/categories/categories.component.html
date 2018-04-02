@@ -12,7 +12,7 @@
         <div class="categories-detail">
           <h2 class="categories-detail-title">{{ currentCategory.name }}<span>分类</span></h2>
           <div class="categories-detail-item" *ngFor="let post of currentPosts">
-            <div class="categories-detail-item-title"><span>{{ post.date }}</span><a [routerLink]="['/home/post', post.id]">{{ post.title }}</a></div>
+            <div class="categories-detail-item-title"><span>{{ post.date }}</span><a [routerLink]="['/home/posts', post.id]">{{ post.title }}</a></div>
           </div>
         </div>
       </div>

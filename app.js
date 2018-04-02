@@ -77,6 +77,7 @@ app.use('/api/home', require('./api/home/post'));
 app.use('/api/home', require('./api/home/tag'));
 app.use('/api/home', require('./api/home/blogroll'));
 app.use('/api/home', require('./api/home/statistic'));
+app.use('/api/home', require('./api/home/other'));
 
 
 // catch 404 and forward to error handler

@@ -19,9 +19,18 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.css",
+        "assets/editormd/css/editormd.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "assets/jquery-3.3.1.min.js",
+        "assets/editormd/editormd.min.js",
+        "assets/editormd/lib/marked.min.js",
+        "assets/editormd/lib/prettify.min.js",
+        "assets/editormd/lib/flowchart.min.js",
+        "assets/editormd/lib/jquery.flowchart.min.js",
+        "assets/editormd/lib/raphael.min.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

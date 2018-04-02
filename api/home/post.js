@@ -141,6 +141,14 @@ router.route('/posts/:id')
 
     const data = {};
     const postQuery = PostModel.Post.findOne({ '_id': id })
+      .populate([
+        {
+          path: '_category',
+        },
+        {
+          path: '_tags',
+        }
+      ])
       .then(post => {
         if (post === null) {
           return re.r200({}, lang.OK, -1, res);
