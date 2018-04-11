@@ -14,6 +14,7 @@ export class EditPost {
   author: string;
   _category: string;
   content: string;
+  summary: string;
   reading: number | string;
   date: number | string | Date;
   order: number | string;
@@ -39,6 +40,7 @@ export class EditpostComponent implements OnInit {
     title: '',
     author: '',
     content: '',
+    summary: '',
     reading: 0,
     date: new Date().getTime(),
     order: 0,
@@ -123,6 +125,7 @@ export class EditpostComponent implements OnInit {
         this.editPost.title = post.title;
         this.editPost.author = post.author;
         this.editPost.content = post.content;
+        this.editPost.summary = post.summary;
         this.editPost.reading = post.reading;
         this.editPost.date = post.date;
         this.editPost.order = post.order;
@@ -139,7 +142,8 @@ export class EditpostComponent implements OnInit {
       tagIds: JSON.stringify(this.editPost._tags),
       order: this.editPost.order,
       date: new Date(<any>this.editPost.date).getTime(),
-      content: this.editPost.content
+      content: this.editPost.content,
+      summary: this.editPost.summary
     };
     this._postService.addPost(newPost)
       .subscribe(data => {
@@ -165,7 +169,8 @@ export class EditpostComponent implements OnInit {
       tagIds: JSON.stringify(this.editPost._tags),
       order: this.editPost.order,
       date: new Date(<any>this.editPost.date).getTime(),
-      content: this.editPost.content
+      content: this.editPost.content,
+      summary: this.editPost.summary
     };
     this._postService.editPost(id, newPost)
       .subscribe(data => {

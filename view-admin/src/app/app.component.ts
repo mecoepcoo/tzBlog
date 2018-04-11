@@ -1,26 +1,26 @@
-import { Component } from '@angular/core';
-import { LoginService } from './share/login.service';
+import { Component, OnInit } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
   providers: [
-    LoginService
   ]
 })
-export class AppComponent {
-  title = 'app';
+export class AppComponent implements OnInit {
+  title = '后台管理';
   constructor(
-    private _loginService: LoginService
+    private titleService: Title,
   ) {
 
   }
 
-  test() {
-    this._loginService.getCaptcha()
-      .subscribe(data => {
-        // console.log(data);
-      });
+  ngOnInit() {
+    this.setTitle(this.title);
+  }
+
+  setTitle(newTitle: string) {
+    this.titleService.setTitle(newTitle);
   }
 }

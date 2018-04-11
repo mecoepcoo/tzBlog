@@ -40,7 +40,8 @@ export class PostmainComponent implements OnInit {
         day: ''
       },
       reading: '',
-      content: ''
+      content: '',
+      summary: ''
     }
   ];
 
@@ -52,6 +53,7 @@ export class PostmainComponent implements OnInit {
   };
 
   ngOnInit() {
+    this.setTitle('Tianzhen呀');
     this.activatedRoute.params
       .subscribe((param) => {
         param.id ? this.pageConfig.currentPage = +param.id : this.pageConfig.currentPage = 1;
@@ -72,28 +74,13 @@ export class PostmainComponent implements OnInit {
             author: data.author,
             category: data._category,
             content: data.content,
+            summary: data.summary,
             reading: data.reading,
             order: data.order,
             tags: data._tags,
             date: parseTime(data.date, 3)
           };
           this.posts.push(postsEle);
-/*           let content = data.content;
-          let cutFlag = '<!--more-->';
-          if (/<\!--more-->/.test(content)) {
-            this.posts[index].content = content.substring(0, content.indexOf(cutFlag));
-          } else {
-            this.posts[index].content = content;
-          }
-          content = this.posts[index].content;
-          let markdown = new Reader('mark');
-          markdown.reader = content;
-          let tempStr = "";
-          for (let text of markdown.getHtml()) {
-            tempStr +=text;
-          }
-          this.posts[index].content = tempStr; */
-
         });
       }, error => {
         console.error('文章载入失败');

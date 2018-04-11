@@ -156,6 +156,7 @@ router.route('/posts/:id')
         data.post = post;
         const newPost = _.cloneDeep(post);
         newPost.reading++;
+        
         newPost.save();
         return PostModel.Post
           .find({

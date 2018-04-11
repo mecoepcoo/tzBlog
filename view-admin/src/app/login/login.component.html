@@ -1,7 +1,7 @@
 <div nz-row id="login-body">
   <div nz-col id="login-box">
     <form nz-form [formGroup]="validateForm" class="login-form" (ngSubmit)="_submitForm()">
-      <h1 class="login-title">通知助手管理系统</h1>
+      <h1 class="login-title">Blog后台管理系统</h1>
       <div nz-form-item>
         <div nz-form-control [nzValidateStatus]="validateForm.controls.userName">
           <nz-input formControlName="userName" [nzPlaceHolder]="'Username'" [nzSize]="'large'" spellcheck="false" [(ngModel)]="loginInfo.username">

@@ -13,12 +13,12 @@
             </div>
           </div>
           <div class="posts-body">
-            <div class="easy-markdown" id="markdown-view">
-              <textarea id="mardown-textarea" [innerHTML]="post.content"></textarea>
+            <div class="easy-markdown" id="markdown-view" #view>
+              <!-- <textarea id="mardown-textarea" [innerHTML]="post.content"></textarea> -->
             </div>
             <div class="posts-body-more">
-              <a routerLink="/home/posts/{{neighbors.prevPost.id}}" class="btn-a pre-post" *ngIf="neighbors.prevPost.title">&lt;&lt;&nbsp;{{ neighbors.prevPost.title }}</a>
-              <a routerLink="/home/posts/{{neighbors.nextPost.id}}" class="btn-a next-post" *ngIf="neighbors.nextPost.title">{{ neighbors.nextPost.title }}&nbsp;&gt;&gt;</a>
+              <a class="btn-a pre-post" *ngIf="neighbors.prevPost.title" (click)="switchPost(neighbors.prevPost.id)">&lt;&lt;&nbsp;{{ neighbors.prevPost.title }}</a>
+              <a class="btn-a next-post" *ngIf="neighbors.nextPost.title" (click)="switchPost(neighbors.nextPost.id)">{{ neighbors.nextPost.title }}&nbsp;&gt;&gt;</a>
             </div>
           </div>
         </div>

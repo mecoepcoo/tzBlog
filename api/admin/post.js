@@ -37,6 +37,7 @@ router.route('/posts')
    * @apiSuccess {object} data._category 分类
    * @apiSuccess {string} data._category.name 分类名称
    * @apiSuccess {string} data.content 正文
+   * @apiSuccess {string} data.summary 摘要
    * @apiSuccess {number} data.reading 阅读量
    * @apiSuccess {number} data.date 时间戳
    * @apiSuccess {number} data.order 排序，数字越大越靠前
@@ -141,6 +142,7 @@ router.route('/posts')
    * @apiParam {number} order 排序
    * @apiParam {number} date 时间戳
    * @apiParam {string} content 正文
+   * @apiParam {string} summary 摘要
    * @apiUse STATUS
    * @apiSuccess {json} data 新增的文章
    * @apiSuccessExample {json} Success - Example:
@@ -172,6 +174,7 @@ router.route('/posts')
     const order = +req.body.order;
     const date = +req.body.date;
     const content = req.body.content || '';
+    const summary = req.body.summary || '';
 
     try {
       if (!title.length) {
@@ -188,6 +191,9 @@ router.route('/posts')
       }
       if (!content.length) {
         throw new Error('请填写文章正文');
+      }
+      if (!summary.length) {
+        throw new Error('请填写摘要');
       }
     } catch (e) {
       return re.r400(e, e.message, res);
@@ -219,7 +225,8 @@ router.route('/posts')
           author: author,
           _category: categoryId,
           _tags: oldTag,
-          content: content
+          content: content,
+          summary: summary
         };
 
         if (order && !_.isNaN(order)) {
@@ -256,6 +263,7 @@ router.route('/posts/:id')
    * @apiSuccess {object} data._category 分类
    * @apiSuccess {string} data._category.name 分类名称
    * @apiSuccess {string} data.content 正文
+   * @apiSuccess {string} data.summary 摘要
    * @apiSuccess {number} data.reading 阅读量
    * @apiSuccess {number} data.date 时间戳
    * @apiSuccess {number} data.order 排序，数字越大越靠前
@@ -328,6 +336,7 @@ router.route('/posts/:id')
    * @apiParam {number} order 排序
    * @apiParam {number} date 时间戳
    * @apiParam {string} content 正文
+   * @apiParam {string} summary 摘要
    * @apiUse STATUS
    * @apiSuccess {json} data 更新的文章
    * @apiSuccessExample {json} Success - Example:
@@ -361,6 +370,7 @@ router.route('/posts/:id')
     const order = +req.body.order;
     const date = +req.body.date;
     const content = req.body.content || '';
+    const summary = req.body.summary || '';
 
     try {
       if (!id.length) {
@@ -380,6 +390,9 @@ router.route('/posts/:id')
       }
       if (!content.length) {
         throw new Error('请填写文章正文');
+      }
+      if (!summary.length) {
+        throw new Error('请填写文章摘要');
       }
     } catch (e) {
       return re.r400(e, e.message, res);
@@ -417,6 +430,7 @@ router.route('/posts/:id')
           post.order = order;
           post.date = date;
           post.content = content;
+          post.summary = summary;
 
           return post.save();
         } else {

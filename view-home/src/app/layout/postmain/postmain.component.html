@@ -21,7 +21,7 @@
             </div>
           </div>
           <div class="posts-body">
-            <p [innerHTML]="post.content" class="easy-markdown"></p>
+            <p [innerHTML]="post.summary" class="easy-markdown"></p>
             <div class="posts-body-more">
               <a [routerLink]="['/home/posts', post.id]" class="btn-a">阅读全文&gt;&gt;</a>
             </div>

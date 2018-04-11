@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute, Params } from '@angular/router';
-// import { marked } from 'marked';
+import { Title } from '@angular/platform-browser';
 
 import 'rxjs/add/operator/switchMap';
 import { PostService } from '../../share/post.service';
@@ -17,15 +17,17 @@ import { parseTime } from '../../share/timeToDate.fn';
   ]
 })
 export class PostComponent implements OnInit {
+  @ViewChild('view') view;
 
   constructor(
     private _PostService: PostService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private titleService: Title,
   ) { }
 
   id = '';
-  post = {
+  post: any = {
     id: '',
     title: '',
     author: '',
@@ -52,12 +54,10 @@ export class PostComponent implements OnInit {
 
 
   ngOnInit() {
+    this.setTitle('Tianzhen呀-文章');
     window.scrollTo(0, 0);
     this.activatedRoute.params
       .subscribe((param) => {
-        this._PostService.getPost(param.id)
-          .subscribe();
-
         this._PostService.getPost(param.id)
           .subscribe((data) => {
             const post = data.data.post;
@@ -87,7 +87,7 @@ export class PostComponent implements OnInit {
               }
             };
             const content = editormd.markdownToHTML('markdown-view', {
-              markdown: this.post.content,
+              markdown: post.content,
               htmlDecode: 'style,script,iframe,link',  // you can filter tags decode
               toc: true,
               markdownSourceCode: false,
@@ -99,6 +99,15 @@ export class PostComponent implements OnInit {
           });
       });
 
+  }
+
+  switchPost(id) {
+    this.view.nativeElement.innerHTML = '';
+    this.router.navigate(['/home/posts', id]);
+  }
+
+  setTitle(newTitle: string) {
+    this.titleService.setTitle(newTitle);
   }
 
 }
