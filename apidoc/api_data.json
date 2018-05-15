@@ -1660,6 +1660,13 @@
             "optional": false,
             "field": "content",
             "description": "<p>正文</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "summary",
+            "description": "<p>摘要</p>"
           }
         ]
       }
@@ -1810,6 +1817,13 @@
             "optional": false,
             "field": "data.content",
             "description": "<p>正文</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data.summary",
+            "description": "<p>摘要</p>"
           },
           {
             "group": "Success 200",
@@ -1964,6 +1978,13 @@
           },
           {
             "group": "Success 200",
+            "type": "string",
+            "optional": false,
+            "field": "data.summary",
+            "description": "<p>摘要</p>"
+          },
+          {
+            "group": "Success 200",
             "type": "number",
             "optional": false,
             "field": "data.reading",
@@ -2090,6 +2111,13 @@
             "optional": false,
             "field": "content",
             "description": "<p>正文</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "string",
+            "optional": false,
+            "field": "summary",
+            "description": "<p>摘要</p>"
           }
         ]
       }

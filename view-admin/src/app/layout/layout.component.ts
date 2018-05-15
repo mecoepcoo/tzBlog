@@ -27,7 +27,7 @@ export class LayoutComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.admin = (<any>this._cookieService.getObject('login')).name;
+    this.admin = (<any>this._cookieService.getObject('token')).name;
   }
 
   doLogout() {

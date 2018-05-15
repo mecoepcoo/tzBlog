@@ -8,6 +8,7 @@ const db = require('../../models/db');
 const mongoose = db.mongoose;
 const PostModel = require('../../models/post');
 const TagModel = require('../../models/tag');
+const checkAuth = require('./check-auth');
 
 /**
  * @apiDefine Post 文章
@@ -73,7 +74,7 @@ router.route('/posts')
    *         "total": 7
    *     }
    */
-  .get( (req, res) => {
+  .get(checkAuth.postList, (req, res, next) => {
     const page = +req.query.page || 1;
     const pageSize = +req.query.pagesize || 10;
     const categoryId = req.query.categoryId || '';

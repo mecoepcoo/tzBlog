@@ -69,7 +69,7 @@ router.route('/login')
           const token = jwt.encode(
             {
               username: username,
-              time: new Date().getTime()
+              time: new Date().getTime() + 86400000
             },
             lang.jwtSecret
           );
@@ -138,7 +138,7 @@ router.route('/logout')
    */
   .get(function (req, res) {
       req.session.captcha = '';
-      res.clearCookie('login');
+      res.clearCookie('token');
       return re.r200mes([], lang.OK, res);
   });
 

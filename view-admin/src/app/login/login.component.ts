@@ -79,7 +79,7 @@ export class LoginComponent implements OnInit {
           const dateNow = new Date();
           const day = dateNow.getDate();
           const date = dateNow.setDate(day + 30);
-          this._cookieService.putObject('login', {
+          this._cookieService.putObject('token', {
             name: username,
             token: token
           }, {
